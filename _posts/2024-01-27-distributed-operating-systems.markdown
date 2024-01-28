@@ -124,9 +124,25 @@ Alternative Solutions
         * can't still handle inference (low latency for dynamic requests in inference, vs. high-throughput
 on static inputs for training)
       * create 'glue systems'
-        * burden falls on the application developer, as specialized frameworks
+        * burden falls on the application developers, as specialized frameworks
         typically do not take on the necessary responsibilities of managing resources, 
         data movement, and recovery across frameworks
+
+
+Propositions
+  * A general-purpose distributed programming interface based on distributed futures, actors, and tasks
+    * distributed futures extend rpc with a shared and immutable address space
+  * Architecture for this interface 
+    * Lineage stash
+      * provides a strong guarantee of exactly-once semantics for distributed futures and actors
+      * resolves the tradeoff between checkpointing- vs lineage-based recovery approaches
+    * Ownership
+      * provides RPC-like latency and scalability, but extends RPC with a fault-tolerant distributed memory layer
+      * provides minimal but essential recovery guarantees
+      * key applications of this system include applications that can implement checkpointing at the application level
+    * Exoflow
+      * builds upon the ownership system to expand the recovery guarantees and support more applications
+      * unlike others, it decouples the unit of recovery from the unit of execution
 
 
 
