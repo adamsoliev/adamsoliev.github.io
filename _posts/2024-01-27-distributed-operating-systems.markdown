@@ -145,4 +145,20 @@ Propositions
       * unlike others, it decouples the unit of recovery from the unit of execution
 
 
+Distributed futures and RPC
+  * RPC should be extended with 
+    * shared immutable address space
+      * augmenting each “executor” with a local data store or cache
+      * enhancing the load balancer to be memory-aware
+    * first-class references
+      * all RPC invocations return a reference
+      * client can pass a reference as an RPC argument, in addition to normal values
+      * client can pass a shared reference (SharedRef) when it is useful for executor to receive a reference instead of a value
+      a client uses the delete call to notify the system when it no longer needs a value (implicit)
+    * distributed future - a future that is a first-class reference to a
+      possibly remote value (asynchronous RPC functions return 'future'
+      already); interesting thing is if that return is a reference, that
+      becomes distrubuted future introduced here
+
+
 
