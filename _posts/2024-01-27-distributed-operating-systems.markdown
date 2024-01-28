@@ -83,7 +83,50 @@ Primary execution model for data analytics:
 
 While batch and stream processing models can in principle handle DL workloads, it comes
 with heavy toll on performance. Fundamentally, this stems from different core
-computational patterns of DL: stochastic gradient descent and accelerator-based
+computational patterns of DL: stochastic gradient descent (SGD) and accelerator-based
 computation. 
+
+Scaling SGD with data parallelism is possible (multiple copies of a model
+executing over a disjoint subset of training dataset) but requires 
+1) frequent communication (thus, poor fit for batch processing)
+2) synchronization (thus, poor fit for stream processing) between workers. 
+
+In addition, these per-layer operations require accelerators (e.g., GPUs), 
+which create challenges in fault tolerance and resource management. 
+For former, GPU workers must synchronize frequently, which means they fate-share 
+as opposed to being able to fail/recover independently. For latter, sharing memory 
+across CPU and GPU threads is expensive as it requires copying; multiplexing 
+GPU tasks ('kernels') is difficult; coordinating access to shared memory 
+adds overhead; GPUs use specialized communication links (NVIDIA's NVLink) 
+that are separate from commodity networks.
+
+Finally, fully connected layers in DL models require all model weights to be in
+memory for acceptable performance. If that exceeds GPU memory capacity, it adds
+challenge of `model parallelism' or scaleout of a single model copy across
+multiple GPUs. Model parallelism strategies can be further broken down
+into tensor vs. pipeline parallelism. Scalability of both strategies is fundamentally
+limited by increasing communication and/or memory cost.
+
+Thus, adding native/efficient GPU support for existing data-parallel frameworks
+is complex. It is also insufficient to build GPU-based frameworks since many
+workloads require both CPU and GPU execution. 
+
+
+Alternative Solutions
+  * Monolithic frameworks (Distributed TensorFlow, Apache MXNet, and PyTorch Distributed)
+    * re-implement a dataflow interface using low-level message-passing interfaces
+    * expose a specialized DAG-based programming interface
+    * fault tolerance is commonly supported through checkpointing
+    * they aren't general enough (hyper-parameter search, RL, CPU-based preprocessing that overlaps with GPU computations)
+    * so users have two options: 
+      * add more workloads to these frameworks
+        * very high incremental complexity 
+        * can't still handle inference (low latency for dynamic requests in inference, vs. high-throughput
+on static inputs for training)
+      * create 'glue systems'
+        * burden falls on the application developer, as specialized frameworks
+        typically do not take on the necessary responsibilities of managing resources, 
+        data movement, and recovery across frameworks
+
 
 
