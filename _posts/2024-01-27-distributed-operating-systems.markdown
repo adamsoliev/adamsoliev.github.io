@@ -28,10 +28,10 @@ be built on top as libraries.
 
 other such systems: MPI
 
-This system should provide 
-  * fine-grained and dynamic unit of parallelism
-  * abstraction of distrubuted memory
-  * (choice of) failure transparency 
+Requirements 
+  * a flexible unit of parallel computation
+  * an abstraction for distributed memory
+  * developer choice over recovery strategy
 
 on computation side
   general-purpose programming interface that extends RPC
@@ -40,7 +40,44 @@ on computation side
 on memory side
   `distributed futures` enables pass-by-reference semantics for RPC
 
+Landscape of data-intensive applications
+
+Data analytics vs ML
+
+  * on parallel computation, data analytics applications can continue to scale
+  using data parallelism while ML workloads require model parallelism in addition
+  to data parallelism. Hence, we need a flexible unit of parallel computation. 
+
+  * on distributed memory side, different frameworks or units of computation need
+  to efficiently exchange data. Hence, we need an abstraction for distributed
+  memory.
+
+  * on recovery strategy, in data analytics challenges of fault tolerance stem from
+  the problem of producing consistent snapshots with low overhead while in ML, it
+  stems from the tightly coupled and fate-sharing nature of ML clusters. Hence,
+  we need a choice over recovery strategy. 
 
 
+Primary execution model for data analytics: 
+  * batch processing (MapReduce, Spark)
+    * processes fixed-size batch of data at a time
+    * typically offline, needs large input and high throughput
+      * input is partitioned and each is executed as a stage of parallel tasks
+    * no need for feedback-loops
+    * needs central scheduler
+    * fault tolerance provided through transparent re-execution of lost tasks
+
+  * stream processing
+    * uses an asynchronous and stateful model
+    * each data transform is instantiated by operator(s) that share input
+      stream; data partitioning and task scheduling are done on the fly, 
+      as each operator independently reads from its input stream once 
+      it is ready to process another record
+    * fault tolerance is provided through global checkpointing and rollback
+
+While batch and stream processing models might be handle DL workloads, it comes
+with heavy toll on performance. Fundamentally, this stems from different core
+computational patterns of DL: stochastic gradient descent and accelerator-based
+computation. 
 
 
