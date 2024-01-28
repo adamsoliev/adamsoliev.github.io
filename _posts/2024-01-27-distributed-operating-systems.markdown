@@ -145,20 +145,46 @@ Propositions
       * unlike others, it decouples the unit of recovery from the unit of execution
 
 
-Distributed futures and RPC
-  * RPC should be extended with 
-    * shared immutable address space
-      * augmenting each “executor” with a local data store or cache
-      * enhancing the load balancer to be memory-aware
-    * first-class references
-      * all RPC invocations return a reference
-      * client can pass a reference as an RPC argument, in addition to normal values
-      * client can pass a shared reference (SharedRef) when it is useful for executor to receive a reference instead of a value
-      a client uses the delete call to notify the system when it no longer needs a value (implicit)
-    * distributed future - a future that is a first-class reference to a
-      possibly remote value (asynchronous RPC functions return 'future'
-      already); interesting thing is if that return is a reference, that
-      becomes distrubuted future introduced here
+<h3>
+  Distributed futures and RPC
+</h3>
+A key abstraction here is distrubuted futures, which enables a necessary feature
+for data-intensive RPC applications: a shared but immutable address space. This
+feature is essential for memory efficiency (avoid unnecessary copying) in these
+types of applications. 
+
+Distributed futures is built on top of RPC as an extension. Specifically, it is a
+reference, to a possibly remote value, returned from a RPC call
+(an implementation can choose to return by value, reference, or both). Additionally, 
+these extended RPC functions (`task`) take references as arguments. If that
+reference is a regular one (Ref), it gets dereferenced and its value is sent to its 
+executor. If it is a shared one (SharedRef), the executor receives the reference (which 
+it also can pass around as reference) instead of value. Lastly, value and its
+reference are 'deleted' by the language binginds when a Ref goes out of scope. 
+
+Providing shared address space have been tried before. Some tried to add it at
+the application level; while this does provide benefits, it has its 'drawbacks' -
+user application has to manage memory manually. Frameworks like Apache Spark 
+(big data processing) and Distributed TensorFlow (ML) also provide shared address space, 
+building on top of RPC. The issue with these frameworks if you are building 
+an application on top of them is you don't have easy interoperability in your application 
+because there is no common foundation (like RPC). Instead, some parts of your app 
+communicate via RPC and others do so via framework-specific protocals, leading to unnecessary copying. 
+
+Given all of that, it might be better to extend RPC itself and use that abstraction to
+build a common layer that handles memory management automatically. Ideally, this 
+layer is proceeded by specialized frameworks (used like libraries) and these can be 
+used (in mix or individually) to build data-intensive applications. 
+
+Given current RPC systems consist of a scheduler and a number of servers that
+get assigned RPC jobs, extending RPC as discussed above would mean:
+  * augmenting each “executor” with a local data store or cache
+  * enhancing the load balancer to be memory-aware
+
+
+
+TYPO
+p19 - conscious of data movement => unconscious of data movement
 
 
 
