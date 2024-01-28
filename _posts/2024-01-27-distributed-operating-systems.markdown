@@ -5,6 +5,12 @@ date:   2024-01-27 19:14:45 -0600
 categories: jekyll update
 ---
 
+<h3>
+  <a href="https://www2.eecs.berkeley.edu/Pubs/TechRpts/2024/EECS-2024-3.html" target=_blank>
+    Towards a Distributed OS for Data-Intensive Cloud Applications
+  </a> by Stephanie Wang 
+</h3>
+
 * Problem: growing demands for data-intensive applications
 * Solution:
   * HW: horizontal scaling and hw accelerators
@@ -75,7 +81,7 @@ Primary execution model for data analytics:
       it is ready to process another record
     * fault tolerance is provided through global checkpointing and rollback
 
-While batch and stream processing models might be handle DL workloads, it comes
+While batch and stream processing models can in principle handle DL workloads, it comes
 with heavy toll on performance. Fundamentally, this stems from different core
 computational patterns of DL: stochastic gradient descent and accelerator-based
 computation. 
