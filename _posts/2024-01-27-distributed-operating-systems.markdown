@@ -218,11 +218,13 @@ updates its local stash, forwards the most recent unsaved lineage and flushes
 its stash to a remote store. Since flushing is asynchronous, it has negligible impact 
 on application latency during normal operation.
 
-A key here is to identify a mininum set of nondeterministic events to 
-asynchronously log such that global consistency can be recovered in a case of 
+A key here is to identify a mininum set of nondeterministic events to
+synchronously log to a local, in-memory stash and asynchronously flush that
+stash to a remote store such that global consistency can be recovered in a case of 
 failure while also guaranteeing low runtime overhead, which means designing
 an efficient protocol to store the logs off the critical path of execution.
 
+![Lineage stash architecture]({{site.baseurl}}/assets/2024-01-27-distributed-operating-systems_lineage_stash_arch.png)
 
 <hr>
 TYPO
