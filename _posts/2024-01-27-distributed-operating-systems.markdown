@@ -11,6 +11,10 @@ categories: jekyll update
   </a> by Stephanie Wang 
 </h3>
 
+> The following notes represents my interpretation of the above work. 
+Anything discussed belong to the original author(s) unless explicitly noted. 
+Any errors or misinterpretations are my own.
+
 * Problem: growing demands for data-intensive applications
 * Solution:
   * HW: horizontal scaling and hw accelerators
@@ -156,7 +160,7 @@ types of applications.
 `Distributed futures` is built on top of RPC as an extension. Specifically, it is a
 reference, to a possibly remote value, returned from a RPC call
 (an implementation can choose to return by value, reference, or both). Additionally, 
-these extended RPC functions (`task`) take references as arguments. If that
+these 'extended' asynch RPC functions (`task`) take references as arguments. If that
 reference is a regular one (Ref), the system dereferences it and sends value to the 
 executor. If it is a shared one (SharedRef), the executor receives the reference (which 
 it also can pass around as reference) instead of value. Lastly, value and its
@@ -168,20 +172,21 @@ and references to them are exchanged in RPC calls. While this works, it forces
 application developers to manage memory manually. Frameworks like Apache Spark 
 (big data processing) and Distributed TensorFlow (ML) also provide a shared address space, 
 building on top of RPC. The issue with these domain-specific frameworks is
-interoperability; this implies that applications cross-using these tools are
+interoperability; in other words, applications cross-using these tools are
 redundantly copy inefficient, where some components communicate via RPC and others do so via 
 framework-specific protocols.
 
-Given all of that, it might be better to extend RPC itself and use that abstraction to
-build a common layer that manages memory automatically. Ideally, this 
-layer provides a common foundation for specialized frameworks, which then can be 
+Given all of that, it might be better to extend RPC itself (API shown below) and use that abstraction to
+build a common layer that manages memory automatically, including reclamation, movement, 
+and memory pressure. Since the system has full-control over reference
+creation/deletion (reference is first-class), it can provide distributed
+garbage collection and can decide 'when' to move the data (and provide relevant
+optimizations). First-class reference combined with a memory-aware scheduler can
+also coordinate memory usage of concurrent requests, easing memory pressure.
+Ideally, this layer provides a common foundation for specialized frameworks, which then can be 
 used like libraries (in mix or individually) to build data-intensive applications. 
 
-Given current RPC systems consist of a scheduler and a number of servers that
-get assigned RPC jobs, extending RPC as discussed above would mean:
-  * augmenting each “executor” with a local data store or cache
-  * enhancing the load balancer to be memory-aware
-
+![APIs]({{site.baseurl}}/assets/2024-01-27-distributed-operating-systems_APIs.png)
 
 
 TYPO
