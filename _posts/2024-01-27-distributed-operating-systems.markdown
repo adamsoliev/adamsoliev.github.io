@@ -188,11 +188,29 @@ used like libraries (in mix or individually) to build data-intensive application
 
 ![APIs]({{site.baseurl}}/assets/2024-01-27-distributed-operating-systems_APIs.png)
 
+Related abstractions for distributed memory
+  * mutable shared state
+  * distributed message queues
+  * distributed data structures
+  * primitives for a single “object”
 
+<h3>
+Lineage Stash
+</h3>
+
+two rollback recovery approaches for fault tolerance
+* lineage reconstruction - low recovery overhead and high run-time overhead
+* check-pointing - the opposite tradeoff
+
+proposition
+* lineage stash - low recovery and run-time overhead
+
+<hr>
 TYPO
 
 * p19 - conscious of data movement => unconscious of data movement
 * p20 - single-progress program => single-process program
+* p25 - shared adddress space => shared address space
 
 
 
