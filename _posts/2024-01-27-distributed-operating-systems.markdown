@@ -150,31 +150,32 @@ Propositions
 </h3>
 A key abstraction here is distrubuted futures, which enables a necessary feature
 for data-intensive RPC applications: a shared but immutable address space. This
-feature is essential for memory efficiency (avoid unnecessary copying) in these
+feature is essential for memory efficiency (less copying) in these
 types of applications. 
 
-Distributed futures is built on top of RPC as an extension. Specifically, it is a
+`Distributed futures` is built on top of RPC as an extension. Specifically, it is a
 reference, to a possibly remote value, returned from a RPC call
 (an implementation can choose to return by value, reference, or both). Additionally, 
 these extended RPC functions (`task`) take references as arguments. If that
-reference is a regular one (Ref), it gets dereferenced and its value is sent to its 
+reference is a regular one (Ref), the system dereferences it and sends value to the 
 executor. If it is a shared one (SharedRef), the executor receives the reference (which 
 it also can pass around as reference) instead of value. Lastly, value and its
 reference are 'deleted' by the language binginds when a Ref goes out of scope. 
 
-Providing shared address space have been tried before. Some tried to add it at
-the application level; while this does provide benefits, it has its 'drawbacks' -
-a user application has to manage memory manually. Frameworks like Apache Spark 
+Providing shared address space have been tried before. Some have addressed it at
+the application level, where actual values are stored in a common data store
+and references to them are exchanged in RPC calls. While this works, it forces 
+application developers to manage memory manually. Frameworks like Apache Spark 
 (big data processing) and Distributed TensorFlow (ML) also provide a shared address space, 
-building on top of RPC. The issue with these frameworks if you are building 
-an application on top of them is you don't have easy interoperability in your application 
-because there is no common foundation (like RPC). Instead, some parts of your app 
-communicate via RPC and others do so via framework-specific protocols, leading to unnecessary copying. 
+building on top of RPC. The issue with these domain-specific frameworks is
+interoperability; this implies that applications cross-using these tools are
+redundantly copy inefficient, where some components communicate via RPC and others do so via 
+framework-specific protocols.
 
 Given all of that, it might be better to extend RPC itself and use that abstraction to
-build a common layer that handles memory management automatically. Ideally, this 
-layer is proceeded by specialized frameworks (used like libraries) and these can be 
-used (in mix or individually) to build data-intensive applications. 
+build a common layer that manages memory automatically. Ideally, this 
+layer provides a common foundation for specialized frameworks, which then can be 
+used like libraries (in mix or individually) to build data-intensive applications. 
 
 Given current RPC systems consist of a scheduler and a number of servers that
 get assigned RPC jobs, extending RPC as discussed above would mean:
