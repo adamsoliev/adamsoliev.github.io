@@ -211,11 +211,11 @@ any process that did not fail. Logging-based techniques (lineage reconstruction)
 generally incur high run-time overhead (because all nondeterministic events 
 must be recorded) and low recovery overhead (because of very local rollback). 
 
-Lineage stach is a lineage-based system (low recovery time overhead) that tries to
+Lineage stash is a lineage-based system (low recovery time overhead) that tries to
 reduce run-time overhead of previous such systems. Instead of recording a task's lineage 
 before its execution (as previous ones do), each worker receives the lineage info,
 updates its local stash, forwards the most recent unsaved lineage and flushes
-its stach to a remote store. Since flushing is asynchronous, it has negligible impact 
+its stash to a remote store. Since flushing is asynchronous, it has negligible impact 
 on application latency during normal operation.
 
 A key here is to identify a mininum set of nondeterministic events to 
