@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Distributed Operating Systems"
+title:  "Towards a Distributed OS for Data-Intensive Cloud Applications"
 date:   2024-01-27 19:14:45 -0600
 categories: jekyll update
 ---
@@ -195,15 +195,34 @@ Related abstractions for distributed memory
   * primitives for a single “object”
 
 <h3>
-Lineage Stash
+  Lineage Stash
 </h3>
 
-two rollback recovery approaches for fault tolerance
-* lineage reconstruction - low recovery overhead and high run-time overhead
-* check-pointing - the opposite tradeoff
+There are two general techniques for guaranteeing global consistency after a
+failure: global checkpointing and logging. With global checkpointing, the
+system takes periodic application checkpoints, and in the event of failure, reruns the
+job from the latest checkpoint to a consistent but possibly different state (due to
+nondeterministic execution). In general, checkpointing incurs high recovery
+overhead (because of global rollback) and low run-time overhead (because other
+than checkpointing itself, nondeterministic events aren't recorded). With logging, 
+the system durably logs events during execution, and in the event of failure, 
+exactly replays the events to recover lost state, without needing to rollback 
+any process that did not fail. Logging-based techniques (lineage reconstruction) 
+generally incur high run-time overhead (because all nondeterministic events 
+must be recorded) and low recovery overhead (because of very local rollback). 
 
-proposition
-* lineage stash - low recovery and run-time overhead
+Lineage stach is a lineage-based system (low recovery time overhead) that tries to
+reduce run-time overhead of previous such systems. Instead of recording a task's lineage 
+before its execution (as previous ones do), each worker receives the lineage info,
+updates its local stash, forwards the most recent unsaved lineage and flushes
+its stach to a remote store. Since flushing is asynchronous, it has negligible impact 
+on application latency during normal operation.
+
+A key here is to identify a mininum set of nondeterministic events to 
+asynchronously log such that global consistency can be recovered in a case of 
+failure while also guaranteeing low runtime overhead, which means designing
+an efficient protocol to store the logs off the critical path of execution.
+
 
 <hr>
 TYPO
