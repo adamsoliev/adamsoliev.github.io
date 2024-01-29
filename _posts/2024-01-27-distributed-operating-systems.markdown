@@ -164,12 +164,12 @@ reference are 'deleted' by the language binginds when a Ref goes out of scope.
 
 Providing shared address space have been tried before. Some tried to add it at
 the application level; while this does provide benefits, it has its 'drawbacks' -
-user application has to manage memory manually. Frameworks like Apache Spark 
-(big data processing) and Distributed TensorFlow (ML) also provide shared address space, 
+a user application has to manage memory manually. Frameworks like Apache Spark 
+(big data processing) and Distributed TensorFlow (ML) also provide a shared address space, 
 building on top of RPC. The issue with these frameworks if you are building 
 an application on top of them is you don't have easy interoperability in your application 
 because there is no common foundation (like RPC). Instead, some parts of your app 
-communicate via RPC and others do so via framework-specific protocals, leading to unnecessary copying. 
+communicate via RPC and others do so via framework-specific protocols, leading to unnecessary copying. 
 
 Given all of that, it might be better to extend RPC itself and use that abstraction to
 build a common layer that handles memory management automatically. Ideally, this 
@@ -184,7 +184,9 @@ get assigned RPC jobs, extending RPC as discussed above would mean:
 
 
 TYPO
-p19 - conscious of data movement => unconscious of data movement
+
+* p19 - conscious of data movement => unconscious of data movement
+* p20 - single-progress program => single-process program
 
 
 
