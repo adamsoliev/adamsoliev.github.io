@@ -19,22 +19,18 @@ Any errors or misinterpretations are my own.
 * Solution:
   * HW: horizontal scaling and hw accelerators
   * SW: specilized distributed execution frameworks (e.g., data analytics, ml)
-* Issues:
-  * each reinvents 'the distributed execution' wheel  
-  * each does it in its own way, hence they aren't easy to evolve 
+* Issues with current frameworks:
+  * each implements distrubuted execution (duplicated work)
+  * each does it in its unique way (hard to evolve)
   * applications with heterogeneous workloads need to stich together different
   specialized frameworks
 
 Increasingly, there exists a class of heterogeneous applications (e.g., ML)
 that require scaling with distributed execution. Such apps have historically utilized
-domain-specific frameworks to handle their workloads. As we continue to scale
-these apps and face challenges, it is clear that there should exist an
-execution layer that provides distributed execution services, much like what
-a traditional OS does for applications sharing the same physical resoures. To
-support different use cases, this system should allow distrubuted frameworks to
-be built on top as libraries.
-
-[picture]
+domain-specific frameworks to handle their workloads. As they continue to be scaled,
+it is clear that there should exist a common execution layer that provides distributed 
+execution services, much like what a traditional OS does for applications sharing 
+the same physical resoures. 
 
 other such systems: MPI
 
@@ -225,6 +221,28 @@ failure while also guaranteeing low runtime overhead, which means designing
 an efficient protocol to store the logs off the critical path of execution.
 
 ![Lineage stash architecture]({{site.baseurl}}/assets/2024-01-27-distributed-operating-systems_lineage_stash_arch.png)
+
+What to log?
+  * record lineage; lineage of an object consists of the task that created it 
+  and lineage of each of the task's arguments
+  * store pointer to application data, called object, and description of
+  computation, called task; each task can take as input a process's local state
+  and one or more objects, and can generate objects (return values) as well as
+  other tasks (nested functions)
+  * in cases where different tasks are executed based on data availability
+  (nondeterminism), applications can record task execution order 
+  * if there is nondeterminism inside the task, application can record such
+  events as part of the task description
+
+How to log?
+  ??
+How to recover the logs?
+  ??
+
+the lineage stash protocols and their guarantees
+* Forwarding Lineage
+* Flushing the Stash
+* Recovery Protocol
 
 <hr>
 TYPO
