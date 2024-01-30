@@ -12,8 +12,8 @@ categories: jekyll update
 </h3>
 
 > The following notes represents my interpretation of the above work. 
-Anything discussed belong to the original author(s) unless explicitly noted. 
-Any errors or misinterpretations are my own.
+Anything discussed belong to the original author(s) unless explicitly noted
+otherwise. Any errors or misinterpretations are my own.
 
 * Problem: growing demands for data-intensive applications
 * Solution:
@@ -210,17 +210,62 @@ must be recorded) and low recovery overhead (because of very local rollback).
 Lineage stash is a lineage-based system (low recovery time overhead) that tries to
 reduce run-time overhead of previous such systems. Instead of recording a task's lineage 
 before its execution (as previous ones do), each worker receives the lineage info,
-updates its local stash, forwards the most recent unsaved lineage and flushes
-its stash to a remote store. Since flushing is asynchronous, it has negligible impact 
-on application latency during normal operation.
+updates its local stash (contains all tasks that worker has seen recently), forwards 
+the most recent unsaved lineage and flushes its stash to a remote store. Since flushing 
+is asynchronous, it has negligible impact on application latency during normal operation.
 
-A key here is to identify a mininum set of nondeterministic events to
-synchronously log to a local, in-memory stash and asynchronously flush that
-stash to a remote store such that global consistency can be recovered in a case of 
-failure while also guaranteeing low runtime overhead, which means designing
-an efficient protocol to store the logs off the critical path of execution.
+The main idea here is that instead of storing the lineage in a reliable store at
+run-time, one can forward the full lineage along with every task call. 
+A key to make this practical is to identify a mininum set of nondeterministic events 
+to synchronously log to a local, in-memory stash and asynchronously flush that stash 
+to a remote store such that global consistency can be recovered in a case of failure 
+while also guaranteeing low runtime overhead. 
+
+The lineage stash minimizes the amount logged by exploiting the fact that the computation 
+in data processing is usually deterministic, while the nondeterministic events
+can usually be encapsulated by the order of execution.
+
+Requirements of large-scale fine-grained data processing applications
+  * good performance during normal operation (high throughput and low latency)
+  * high sensitivity to recovery time (should be short)
+  * many types computation performed in a single app (some are deterministic and
+  some are nondeterministic), so achieving recovery correctness is tricky
+
+Lineage is recorded at the granularity of a batch (as opposed to e.g.,
+partition). Think of it like to get this batch 'y', task A calls task B with 'x' as args,
+B produces 'z', which is passed to C, which returns 'y' (lineage for batch
+'y' is A->B->C). This kind of batch lineage is tracked through data
+dependencies (specified through task args) and stateful dependencies (created
+between tasks that execute consecutively on the same process).
 
 ![Lineage stash architecture]({{site.baseurl}}/assets/2024-01-27-distributed-operating-systems_lineage_stash_arch.png)
+
+Ray system model
+  * a distributed scheduler dispatches tasks to local worker processes
+  based on their data and stateful dependencies
+  * each Ray node can host multiple worker processes, which may be stateful
+  (known as actors). They share an in-memory object store
+  * system metadata, such as task descriptions and object locations, 
+  is stored in a logically centralized global store
+
+  * challenges in applying lineage reconstruction to above setting
+    * the granularity at which lineage is recorded is much finer than 
+    in previous lineage-based systems (latency and throughput)
+    * the lineage is not only larger, it must also be updated at 
+    runtime to guarantee exactly-once record processing (asynch record
+    processing introduces nondeterministic events when an operator 
+    processes data from multiple sources)
+    * these problems motivate an asynchronous logging approach, which presents
+    its own challenge, maintaining the decentralized state, and complicates
+    both run-time (local state has to be flushed somehow) and recovery
+    (failed operator's lineage isn't in the central location). The final 
+    challenge is thus in designing simple protocols for flushing local 
+    state and recovering after a failure. 
+    * final challenges are:
+    (1) removing the cost of recording lineage from the critical path of task execution
+    (2) efficiently recording nondeterministic events
+    (3) designing simple, scalable protocols for flushing and recovering lineage
+
 
 What to log?
   * record lineage; lineage of an object consists of the task that created it 
