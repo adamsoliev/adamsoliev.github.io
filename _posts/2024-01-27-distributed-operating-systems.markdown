@@ -267,20 +267,47 @@ Ray system model
     (3) designing simple, scalable protocols for flushing and recovering lineage
 
 
-What to log?
-  * record lineage; lineage of an object consists of the task that created it 
-  and lineage of each of the task's arguments
-  * store pointer to application data, called object, and description of
-  computation, called task; each task can take as input a process's local state
-  and one or more objects, and can generate objects (return values) as well as
-  other tasks (nested functions)
-  * in cases where different tasks are executed based on data availability
-  (nondeterminism), applications can record task execution order 
-  * if there is nondeterminism inside the task, application can record such
-  events as part of the task description
+What info to log?
+  * record every message that every process receives, including the content and the execution order?
+    * no since content can be arbitrarily large
+    * no since execution order might operate at a batch level (a number of message
+    together), not single message
 
-How to log?
-  ??
+    > insight: message content in data processing applications is often output of
+    deterministic computation performed by the sender (easy to recompute)
+
+    * record the lineage (of object, to be precise) instead of the raw data. 
+    Lineage of object consists of the task that created it and 
+    the lineage of each of the task’s arguments (a process’s local state 
+    and one or more objects). Object here is application data and task is 
+    description of the computation.
+    * if there is nondeterminism in execution order, that task execution order 
+    must also be recorded in the lineage
+    * if a process executes nondeterministic events during a task, application 
+    can record such events as part of the task description
+
+How to log it?
+  * instead of storing the lineage reliably before the task is executed, forward 
+  the lineage of each of the task’s inputs with the task invocation (so node
+  executing the task has all info to reconstruct the task's inputs)
+  * in deterministic applications, the lineage need not be forwarded during
+  normal operation and each process only needs to remember the tasks 
+  that it has submitted, by storing them in its local lineage stash
+  * in nondeterministic applications, each process must also forward the lineage that
+  it has seen so far
+
+  > this doesn't scale as the lineage can become very large and forwarding it
+  can be prohibitive, so timely flushing of the local stash is critical
+
+  * asynchronously flush local stash to a global store with clever garbage
+  collection. In this scheme, in the global store each task has
+  a unique identifier and any process may read or append to any task. This
+  means that only a single copy of each task is reliably stored, and 
+  garbage collection of the stable storage can be handled by a single 
+  background process, which erases tasks previous to the last global
+  checkpoint.
+
+
 How to recover the logs?
   ??
 
