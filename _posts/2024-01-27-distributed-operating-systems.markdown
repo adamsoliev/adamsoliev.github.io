@@ -216,12 +216,12 @@ must be recorded) and low recovery overhead (because of very local rollback).
 
 Lineage stash is a lineage-based system (low recovery time overhead) that tries to
 reduce run-time overhead of previous such systems. Instead of recording a task's lineage 
-before its execution (as previous ones do), each worker receives the lineage info,
+before its execution (as previous ones do), each worker receives lineage info,
 updates its local stash (contains all tasks that worker has seen recently), forwards 
 the most recent unsaved lineage and flushes its stash to a remote store. Since flushing 
 is asynchronous, it has negligible impact on application latency during normal operation.
 
-The main idea here is that instead of storing the lineage in a reliable store at
+The main idea here is that instead of storing lineage in a reliable store at
 run-time, one can forward the full lineage along with every task call. 
 A key to make this practical is to identify a mininum set of nondeterministic events 
 to synchronously log to a local, in-memory stash and asynchronously flush that stash 
@@ -234,64 +234,35 @@ and stateful dependencies (created between tasks that execute consecutively on t
 
 ![Lineage stash architecture]({{site.baseurl}}/assets/2024-01-27-distributed-operating-systems_lineage_stash_arch.png)
 
-Ray system model
-  * a distributed scheduler dispatches tasks to local worker processes
-  based on their data and stateful dependencies
-  * each Ray node can host multiple worker processes, which may be stateful
-  (known as actors). They share an in-memory object store
-  * system metadata, such as task descriptions and object locations, 
-  is stored in a logically centralized global store
-
-  * challenges in applying lineage reconstruction to above setting
-    * the granularity at which lineage is recorded is much finer than 
-    in previous lineage-based systems (latency and throughput)
-    * the lineage is not only larger, it must also be updated at 
-    runtime to guarantee exactly-once record processing (asynch record
-    processing introduces nondeterministic events when an operator 
-    processes data from multiple sources)
-    * these problems motivate an asynchronous logging approach, which presents
-    its own challenge, maintaining the decentralized state, and complicates
-    both run-time (local state has to be flushed somehow) and recovery
-    (failed operator's lineage isn't in the central location). The final 
-    challenge is thus in designing simple protocols for flushing local 
-    state and recovering after a failure. 
-    * final challenges are:
-    (1) removing the cost of recording lineage from the critical path of task execution
-    (2) efficiently recording nondeterministic events
-    (3) designing simple, scalable protocols for flushing and recovering lineage
-
-
 What info to log?
-  * since we can't log every message exchanged (each might be arbitrarily large and
+  * since we can't log every message exchanged (each might be arbitrarily large,
   computation is performed at a batch level) and know that message content is usually
-  computed deterministically (easy to recompute)
-  * we can record the lineage (of object, to be precise) instead of the raw data. 
-  Lineage of object consists of the task that created it and 
-  the lineage of each of the task’s arguments (a process’s local state 
-  and one or more objects). Object here is application data and task is 
-  description of the computation.
-  * if there is nondeterminism in execution order, that task execution order 
-  must also be recorded in the lineage
-  * if a process executes nondeterministic events during a task, application 
-  can record such events as part of the task description
+  computed deterministically (easy to recompute), we can
+    * record lineage (of object, to be precise) instead of raw data. 
+    Lineage of object consists of a task that created it and 
+    lineage of each of the task’s arguments (a process’s local state 
+    and one or more objects). Object here is application data and task is 
+    description of the computation
+    * if there is nondeterminism in task execution order, record that order in lineage
+    * if there are nondeterministic events executed during a task, record such events as part of task description
 
 How to log it?
-  * instead of storing the lineage reliably before the task is executed, forward 
-  the lineage of each of the task’s inputs with the task invocation (so node
+  * instead of storing lineage reliably before a task is executed, forward 
+  lineage of each of the task’s inputs with the task invocation (so node
   executing the task has all info to reconstruct the task's inputs)
-  * in deterministic applications, the lineage need not be forwarded during
-  normal operation and each process only needs to remember the tasks 
+  * in deterministic applications, lineage need not be forwarded during
+  normal operation and each process only needs to remember tasks 
   that it has submitted, by storing them in its local lineage stash
-  * in nondeterministic applications, each process must also forward the lineage that
+  * in nondeterministic applications, each process must also forward lineage that
   it has seen so far
 
-  > this doesn't scale as the lineage can become very large and forwarding it
+  > this doesn't scale as lineage can become very large and forwarding it
   can be prohibitive, so timely flushing of the local stash is critical
 
   * asynchronously flush local stash to a global store with clever garbage
   collection. In this scheme, in the global store each task has
-  a unique identifier and any process may read or append to any task. This
-  means that only a single copy of each task is reliably stored, and 
+  a unique identifier and any process may read or append to any task. Hence, 
+  only a single copy of each task is reliably stored, and 
   garbage collection of the stable storage can be handled by a single 
   background process, which erases tasks previous to the last global
   checkpoint.
