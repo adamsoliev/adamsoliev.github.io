@@ -194,6 +194,13 @@ Related abstractions for distributed memory
   Lineage Stash
 </h3>
 
+When designing fault tolerance for distrubuted fine-grained data processing applications, 
+tradeoffs should be made to meet the following requirements as closely as possible
+  * good performance during normal operation (high throughput and low latency)
+  * high sensitivity to recovery time (should be short)
+  * recovery correctness given many types of computations performed (some are deterministic and
+  some are nondeterministic)
+
 There are two general techniques for guaranteeing global consistency after a
 failure: global checkpointing and logging. With global checkpointing, the
 system takes periodic application checkpoints, and in the event of failure, reruns the
@@ -221,22 +228,9 @@ to synchronously log to a local, in-memory stash and asynchronously flush that s
 to a remote store such that global consistency can be recovered in a case of failure 
 while also guaranteeing low runtime overhead. 
 
-The lineage stash minimizes the amount logged by exploiting the fact that the computation 
-in data processing is usually deterministic, while the nondeterministic events
-can usually be encapsulated by the order of execution.
-
-Requirements of large-scale fine-grained data processing applications
-  * good performance during normal operation (high throughput and low latency)
-  * high sensitivity to recovery time (should be short)
-  * many types computation performed in a single app (some are deterministic and
-  some are nondeterministic), so achieving recovery correctness is tricky
-
 Lineage is recorded at the granularity of a batch (as opposed to e.g.,
-partition). Think of it like to get this batch 'y', task A calls task B with 'x' as args,
-B produces 'z', which is passed to C, which returns 'y' (lineage for batch
-'y' is A->B->C). This kind of batch lineage is tracked through data
-dependencies (specified through task args) and stateful dependencies (created
-between tasks that execute consecutively on the same process).
+partition or a single message) and is tracked through data dependencies (specified through task args) 
+and stateful dependencies (created between tasks that execute consecutively on the same process).
 
 ![Lineage stash architecture]({{site.baseurl}}/assets/2024-01-27-distributed-operating-systems_lineage_stash_arch.png)
 
@@ -268,23 +262,18 @@ Ray system model
 
 
 What info to log?
-  * record every message that every process receives, including the content and the execution order?
-    * no since content can be arbitrarily large
-    * no since execution order might operate at a batch level (a number of message
-    together), not single message
-
-    > insight: message content in data processing applications is often output of
-    deterministic computation performed by the sender (easy to recompute)
-
-    * record the lineage (of object, to be precise) instead of the raw data. 
-    Lineage of object consists of the task that created it and 
-    the lineage of each of the task’s arguments (a process’s local state 
-    and one or more objects). Object here is application data and task is 
-    description of the computation.
-    * if there is nondeterminism in execution order, that task execution order 
-    must also be recorded in the lineage
-    * if a process executes nondeterministic events during a task, application 
-    can record such events as part of the task description
+  * since we can't log every message exchanged (each might be arbitrarily large and
+  computation is performed at a batch level) and know that message content is usually
+  computed deterministically (easy to recompute)
+  * we can record the lineage (of object, to be precise) instead of the raw data. 
+  Lineage of object consists of the task that created it and 
+  the lineage of each of the task’s arguments (a process’s local state 
+  and one or more objects). Object here is application data and task is 
+  description of the computation.
+  * if there is nondeterminism in execution order, that task execution order 
+  must also be recorded in the lineage
+  * if a process executes nondeterministic events during a task, application 
+  can record such events as part of the task description
 
 How to log it?
   * instead of storing the lineage reliably before the task is executed, forward 
@@ -307,14 +296,14 @@ How to log it?
   background process, which erases tasks previous to the last global
   checkpoint.
 
-
 How to recover the logs?
-  ??
-
-the lineage stash protocols and their guarantees
-* Forwarding Lineage
-* Flushing the Stash
-* Recovery Protocol
+  * upon a failure, each remaining process simply flushes its local stash to the global store
+  and replies to the recovering process once all writes have been acknowledged. The
+  recovering process can then retrieve its lineage by walking the task dependencies in
+  the global store, starting from the tasks resubmitted by the other processes
+  * deterministic processes just need get lineage of tasks they had received from other processes
+  * nondeterministic processes need initial execution order, as well as any nondeterministic events 
+  that occured during task's execution
 
 <hr>
 TYPO
