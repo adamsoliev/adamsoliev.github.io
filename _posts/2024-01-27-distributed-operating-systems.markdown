@@ -272,6 +272,40 @@ How to recover the logs?
   * nondeterministic processes need initial execution order, as well as any nondeterministic events 
   that occured during task's execution
 
+<h3>
+  Ownership
+</h3>
+
+RPC enables distributed communication albeit synchronous (blocking) and return-by-value one. Since modern 
+applications have large data, blocking is bad parallelism-wise and return-by-value is expensive 
+data-movement-wise. So, we need a system that manages distributed communication while providing efficient data movement and parallelism services to the application.
+
+To be more specific, we need the following abstractions
+  * in data movement
+    * distrubuted shared memory
+    * ability to pass/return references to values in the above memory
+    * values should be immutable to simplify the consistency model and implementation
+  * in parallelism
+    * futures - RPC extended with asynchrony
+    * composition - ability to pass a future as argument to another RPC
+  * resulting system
+    * distributed futures
+      * combination of distributed memory and futures 
+    * high-performance fault tolerance for fine-grained tasks 
+
+Now, the problem is if a task holds a reference to a distributed future, can we guarantee that it will eventually be able to dereference the value?
+
+Our solution is ownership - the caller of a task is the owner of the returned future and all related metadata
+  * nested tasks can be used to shart the system 
+  * task latency is low because metawrite writes, though synchronous, are local
+  * each worker becomes in effect a centralized master for the distributed futures that it owns and can perform all system operations locally; this simlifies failure handling
+
+What if the owner itself fails?
+  * reference holders fate-share with the future’s owner
+    * while owner failures may cause other tasks to rollback, the tree structure (the references to a distributed future are held by tasks that are descendants of the failed owner) ensures that the blast radius will be minimized
+    * during recovery (the failed task can be recreated through lineage reconstruction by its owner, and the descendant tasks will also be recreated in the process), the new owner and descendant tasks will naturally be consistent with each other via the normal execution path, without any need for additional protocols
+
+
 <hr>
 TYPO
 
