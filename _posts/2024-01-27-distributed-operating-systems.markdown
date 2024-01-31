@@ -12,59 +12,55 @@ categories: jekyll update
 </h3>
 
 > The following notes represents my interpretation of the above work. 
-Anything discussed belong to the original author(s) unless explicitly noted
+Anything illustrated and discussed belong to the original author(s) unless explicitly noted
 otherwise. Any errors or misinterpretations are my own.
 
 * Problem: growing demands for data-intensive applications
 * Solution:
-  * HW: horizontal scaling and hw accelerators
+  * HW: horizontal scaling and accelerators
   * SW: specilized distributed execution frameworks (e.g., data analytics, ml)
-* Issues with current frameworks:
-  * each implements distrubuted execution (duplicated work)
-  * each does it in its unique way (hard to evolve)
+* Issues with existing frameworks:
+  * each implements distrubuted execution in isolation (duplicated work)
+  * even though each uses common low-level primitives (RPC and OS syscalls), their
+  features/optimizations aren't easily portable to another
   * applications with heterogeneous workloads need to stich together different
-  specialized frameworks
+  specialized frameworks, leaving issues such as efficient data movement and 
+  sharing of cluster resources to the end developer
 
 Increasingly, there exists a class of heterogeneous applications (e.g., ML)
-that require scaling with distributed execution. Such apps have historically utilized
+that require scaling with distributed execution. Such applications have historically utilized
 domain-specific frameworks to handle their workloads. As they continue to be scaled,
 it is clear that there should exist a common execution layer that provides distributed 
-execution services, much like what a traditional OS does for applications sharing 
-the same physical resoures. 
+execution, memory management and fault tolerance services, much like what a traditional OS does for 
+applications sharing the same physical resoures. 
 
-other such systems: MPI
-
-Requirements 
-  * a flexible unit of parallel computation
-  * an abstraction for distributed memory
-  * developer choice over recovery strategy
-
-on computation side
-  general-purpose programming interface that extends RPC
-  `actor model` for computation
-  single function call as the smallest unit of parallelism (`task`)
-on memory side
-  `distributed futures` enables pass-by-reference semantics for RPC
-
-Landscape of data-intensive applications
-
-Data analytics vs ML
-
-  * on parallel computation, data analytics applications can continue to scale
+To be more specific,
+  * on distributed parallel computation, data analytics applications can continue to scale
   using data parallelism while ML workloads require model parallelism in addition
-  to data parallelism. Hence, we need a flexible unit of parallel computation. 
+  to data parallelism. Hence, we need a flexible unit of parallel computation
 
-  * on distributed memory side, different frameworks or units of computation need
+  * on distributed memory, different frameworks or units of computation need
   to efficiently exchange data. Hence, we need an abstraction for distributed
-  memory.
+  memory
 
-  * on recovery strategy, in data analytics challenges of fault tolerance stem from
+  * on fault tolerance, in data analytics challenges of fault tolerance stem from
   the problem of producing consistent snapshots with low overhead while in ML, it
   stems from the tightly coupled and fate-sharing nature of ML clusters. Hence,
-  we need a choice over recovery strategy. 
+  we need a choice over recovery strategy
 
+Thesis proposes, 
+  * on computation
+    * general-purpose programming interface that extends RPC
+    * `actor model` for computation
+    * single function call as the smallest unit of parallelism (`task`)
+  * on memory
+    * `distributed futures` enables pass-by-reference semantics for RPC
+  * on fault tolerance
+    * lineage stash with low run-time and recovery time overhead
 
-Primary execution model for data analytics: 
+<hr><br>
+
+Background on batch and stream processing models
   * batch processing (MapReduce, Spark)
     * processes fixed-size batch of data at a time
     * typically offline, needs large input and high throughput
@@ -91,18 +87,18 @@ executing over a disjoint subset of training dataset) but requires
 1) frequent communication (thus, poor fit for batch processing)
 2) synchronization (thus, poor fit for stream processing) between workers. 
 
-In addition, these per-layer operations require accelerators (e.g., GPUs), 
+In addition, per-layer operations of DL require accelerators (e.g., GPUs), 
 which create challenges in fault tolerance and resource management. 
 For former, GPU workers must synchronize frequently, which means they fate-share 
-as opposed to being able to fail/recover independently. For latter, sharing memory 
-across CPU and GPU threads is expensive as it requires copying; multiplexing 
-GPU tasks ('kernels') is difficult; coordinating access to shared memory 
+as opposed to fail/recover independently. For latter, sharing memory 
+across CPU and GPU threads is expensive as it requires copying large amount of data; 
+multiplexing GPU tasks ('kernels') is difficult; coordinating access to shared memory 
 adds overhead; GPUs use specialized communication links (NVIDIA's NVLink) 
 that are separate from commodity networks.
 
 Finally, fully connected layers in DL models require all model weights to be in
 memory for acceptable performance. If that exceeds GPU memory capacity, it adds
-challenge of `model parallelism' or scaleout of a single model copy across
+challenge of model parallelism or scaleout of a single model copy across
 multiple GPUs. Model parallelism strategies can be further broken down
 into tensor vs. pipeline parallelism. Scalability of both strategies is fundamentally
 limited by increasing communication and/or memory cost.
@@ -111,25 +107,25 @@ Thus, adding native/efficient GPU support for existing data-parallel frameworks
 is complex. It is also insufficient to build GPU-based frameworks since many
 workloads require both CPU and GPU execution. 
 
-
-Alternative Solutions
+What are alternative solutions?
   * Monolithic frameworks (Distributed TensorFlow, Apache MXNet, and PyTorch Distributed)
     * re-implement a dataflow interface using low-level message-passing interfaces
     * expose a specialized DAG-based programming interface
     * fault tolerance is commonly supported through checkpointing
-    * they aren't general enough (hyper-parameter search, RL, CPU-based preprocessing that overlaps with GPU computations)
-    * so users have two options: 
+
+    * since they aren't general enough (can't efficiently support hyper-parameter search, RL, 
+    CPU-based preprocessing that overlaps with GPU computations), 
+    users have two options: 
       * add more workloads to these frameworks
         * very high incremental complexity 
-        * can't still handle inference (low latency for dynamic requests in inference, vs. high-throughput
-on static inputs for training)
+        * can't still handle inference (low latency for dynamic requests in inference vs 
+        high-throughput on static inputs for training)
       * create 'glue systems'
         * burden falls on the application developers, as specialized frameworks
         typically do not take on the necessary responsibilities of managing resources, 
         data movement, and recovery across frameworks
 
-
-Propositions
+A proposed solution
   * A general-purpose distributed programming interface based on distributed futures, actors, and tasks
     * distributed futures extend rpc with a shared and immutable address space
   * Architecture for this interface 
