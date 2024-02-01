@@ -305,6 +305,13 @@ What if the owner itself fails?
     * while owner failures may cause other tasks to rollback, the tree structure (the references to a distributed future are held by tasks that are descendants of the failed owner) ensures that the blast radius will be minimized
     * during recovery (the failed task can be recreated through lineage reconstruction by its owner, and the descendant tasks will also be recreated in the process), the new owner and descendant tasks will naturally be consistent with each other via the normal execution path, without any need for additional protocols
 
+<h3>
+  Exoshuffle
+</h3>
+Exoshuffle is a library that examplifies what can be built on top of the ownership architecture, essentially enabling MapReduce applications to run in the system. It does so by decoupling the shuffle control plane, which is managed by the library, from the shuffle data plane, which is managed by the system. The former is responsible for shuffle schedule for tasks and data movement while the latter handles data movement, recovery, and pipelining with execution. To support scaling in such applications, the ownership architecture here is extended to include support for out-of-core data processing via object spilling. Overall, these enable the system to
+  * rewrite shuffle optimizations as application-level libraries with an order of magnitude less code 
+  * achieve shuffle performance and scalability competitive with monolithic shuffle systems
+  * enable new applications such as ML training to easily leverage scalable shuffle
 
 <hr>
 TYPO
