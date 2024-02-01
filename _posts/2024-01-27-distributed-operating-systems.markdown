@@ -295,10 +295,10 @@ To be more specific, we need the following abstractions
 
 Now, the problem is if a task holds a reference to a distributed future, can we guarantee that it will eventually be able to dereference the value?
 
-Our solution is ownership - the caller of a task is the owner of the returned future and all related metadata
-  * nested tasks can be used to shart the system 
-  * task latency is low because metawrite writes, though synchronous, are local
-  * each worker becomes in effect a centralized master for the distributed futures that it owns and can perform all system operations locally; this simlifies failure handling
+The proposed solution is ownership - the caller (another worker process) of a task is the owner of the returned future and all related metadata
+  * nested tasks can be used to 'shard' the system 
+  * task latency is low because metadata writes, though synchronous, are local
+  * each worker becomes in effect a centralized master for the distributed futures that it owns and can perform all system operations locally; this simplifies failure handling
 
 What if the owner itself fails?
   * reference holders fate-share with the future’s owner
@@ -312,6 +312,7 @@ TYPO
 * p19 - conscious of data movement => unconscious of data movement
 * p20 - single-progress program => single-process program
 * p25 - shared adddress space => shared address space
+* p74 - Figure 4.7g => Figure 4.7c
 
 
 
