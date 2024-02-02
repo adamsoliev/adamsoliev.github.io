@@ -305,17 +305,13 @@ What if the owner itself fails?
     * while owner failures may cause other tasks to rollback, the tree structure (the references to a distributed future are held by tasks that are descendants of the failed owner) ensures that the blast radius will be minimized
     * during recovery (the failed task can be recreated through lineage reconstruction by its owner, and the descendant tasks will also be recreated in the process), the new owner and descendant tasks will naturally be consistent with each other via the normal execution path, without any need for additional protocols
 
-<h3>
-  Exoshuffle
-</h3>
+<h3>Exoshuffle</h3>
 Exoshuffle is a library that exemplifies what can be built on top of the ownership architecture, essentially enabling MapReduce applications to run in the system. It does so by decoupling the shuffle control plane, which is managed by the library, from the shuffle data plane, which is managed by the system. The former is responsible for shuffle schedule for tasks and data movement while the latter handles data movement, recovery, and pipelining with execution. To support scaling in such applications, the ownership architecture here is extended to include support for out-of-core data processing via object spilling. Overall, these enable the system to
   * rewrite shuffle optimizations as application-level libraries with an order of magnitude less code 
   * achieve shuffle performance and scalability competitive with monolithic shuffle systems
   * enable new applications such as ML training to easily leverage scalable shuffle
 
-<h3>
-  Exoflow
-</h3>
+<h3>Exoflow</h3>
 Limitations of the ownership architecture
   * can't guarantee exactly-once semantics (otherwise tasks must be deterministic and idempotent)
   * doesn't provide automatic durability, i.e. recovered tasks are re-executed from the beginning
@@ -324,14 +320,4 @@ Exoflow addresses the above two points by extending the distributed futures inte
 
 Importantly, it decouples the unit of execution from the unit of recovery. In particular, it guarantees fault tolerance by durably logging the workflow DAG and coordinating task checkpoint and recovery, while execution of the DAG is handled by a generic “backend”. 
  
-
-<hr>
-TYPO
-
-* p19 - conscious of data movement => unconscious of data movement
-* p20 - single-progress program => single-process program
-* p25 - shared adddress space => shared address space
-* p74 - Figure 4.7g => Figure 4.7c
-
-
 
