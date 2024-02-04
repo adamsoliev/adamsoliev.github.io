@@ -22,7 +22,7 @@ otherwise. Any errors or misinterpretations are my own.
 * Issues with existing frameworks:
   * each implements distrubuted execution in isolation (duplicated work)
   * even though each uses common low-level primitives (RPC and OS syscalls), their
-  features/optimizations aren't easily portable to another
+  features/optimizations aren't easily portable to one another
   * applications with heterogeneous workloads need to stich together different
   specialized frameworks, leaving issues such as efficient data movement and 
   sharing of cluster resources to the end developer
@@ -84,8 +84,8 @@ computation.
 
 Scaling SGD with data parallelism is possible (multiple copies of a model
 executing over a disjoint subset of training dataset) but requires 
-1) frequent communication (thus, poor fit for batch processing)
-2) synchronization (thus, poor fit for stream processing) between workers. 
+  * frequent communication (thus, poor fit for batch processing)
+  * synchronization (thus, poor fit for stream processing) between workers. 
 
 In addition, per-layer operations of DL require accelerators (e.g., GPUs), 
 which create challenges in fault tolerance and resource management. 
@@ -126,8 +126,8 @@ What are alternative solutions?
         data movement, and recovery across frameworks
 
 A proposed solution
-  * A general-purpose distributed programming interface based on distributed futures, actors, and tasks
-    * distributed futures extend rpc with a shared and immutable address space
+  * A general-purpose distributed programming interface based on distributed futures, actors (e.g., Python class), and tasks (e.g., Python function)
+    * distributed futures extend RPC with a shared and immutable address space
   * Architecture for this interface 
     * Lineage stash
       * provides a strong guarantee of exactly-once semantics for distributed futures and actors
@@ -180,7 +180,7 @@ used like libraries (in mix or individually) to build data-intensive application
 
 ![APIs]({{site.baseurl}}/assets/2024-01-27-distributed-operating-systems_APIs.png)
 
-Related abstractions for distributed memory
+Unrelated, but here are other abstractions for distributed memory
   * mutable shared state
   * distributed message queues
   * distributed data structures
