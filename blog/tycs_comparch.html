@@ -17,12 +17,24 @@
 <p>ISA is an interface between hardware and software; historically, CISC dominated the industry due to [reasons]; in recent years, RISC has become more popular due to [reasons]</p>
 <p>Important things to consider here: instruction formats, addressing modes, registers</p>
 
-<h3>Memory Hierarchy</h3>
-<p>Takes advantage of principle of locality (temporal and spatial) and cost-performance trade-offs.</p>
+<h3>Memory Hierarchy (MH)</h3>
+<p>MH is an economic way to create 'unlimited fast memory'. It is possible due to the principle of locality (temporal and spatial) and cost-performance trade-offs of current memory technologies.</p>
 <img src="../assets/memory_hierarchy.png" alt="Memory Hierarchy" style="width: 70%;">
-<p>It consists of multiple levels of memory: registers, cache, main memory, disk, distributed file systems.</p>
+<p>It consists of multiple levels of memory, starting from fast but expensive to cheap but slow: registers, cache, main memory, disk, distributed file systems.</p>
 <p>Important things to consider here: cache coherence, memory management, virtual memory.</p>
-
+<p>Notable that advances in processor performance led to increased importance of MH. Specifically, processor can handle much more instructions per unit time than memory can provide, so MH is used to keep processor as busy as possible. Also notable that lack of single core processor performance improvements caused the gap growth to slow down.</p>
+<p>This where multiple cores processors come into play. As the number of cores grow, the gap between CPU memory demand and DRAM band-width continues to grow again. Intel Core i7 6700 with four cores and a 4.2 GHz clock rate has peak data bandwidth of 256 GB/s and peak instruction bandwidth of 204.8 GB/s; so, total theoretical peak bandwidth is 460.8 GB/s. In contrast, the peak bandwidth for DRAM main memory, using a dual-channel DDR4 memory controller, is 34.1 GB/s.</p>
+<p>
+Theoretical peak data memory references: 2 * 4 * 4.2 billion = 33.6 billion references/second <br>
+Data bandwidth: 32 billion * 8 bytes = 268.8 GB/s<br>
+For instructions: 12.8 billion * 16 bytes (128 bits) = 204.8 GB/s (peak instruction demand of about 12.8 billion 128-bit instruction references)<br>
+Total theoretical peak bandwidth: 268.8 GB/s + 204.8 GB/s = 473.6 GB/s (441 GiB/s)
+</p>
+<p>Traditionally, designers of memory hierarchies focused on optimizing average memory access time, which is determined by the cache access time, miss rate, and miss penalty. More recently, however, power has become a major consideration.</p>
+<p>When a word is not found in the cache, the word must be fetched from a lower level in the hierarchy (which may be another cache or the main memory) and placed in the cache before continuing. Multiple words, called a block (or line), are moved for efficiency and locality reasons. Depending on its placement, cache can be seen as n-way associative set-associative, direct-mapped, or fully-associative.</p>
+<p>Caching reads is easy, but caching writes is more difficult. There are three strategies: write-through and write-back.</p>
+<p>On cache level, a preferred measure of performance is miss rate or misses per instruction. On a memory level, a better measure is average memory access time. On a processor level, execution time is usually what matters.</p> 
+  
 <h3>Pipelining</h3>
 <p>It has the following stages: Fetch, Decode, Execute, Memory Access, Write Back.</p>
 <p>Important things to consider here: hazards (structural, data, control), instruction-level parallelism.</p>
