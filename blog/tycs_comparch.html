@@ -11,79 +11,37 @@
 <body class="david-libre-regular">
 
 <h1>Computer Architecture</h1>
+<hr>
 
-<h3>Hardware Organization</h3>
-<ul>
-  <li>Architecture</li>
-  <li>Instruction Set Architecture (ISA)</li>
-  <ul>
-    <li>Interface between hardware and software</li>
-    <li>Types
-      <ul>
-        <li>CISC</li>
-        <li>RISC</li>
-      </ul>
-    </li>
-    <li>Includes instruction formats, addressing modes, registers</li>
-  </ul>
-  <li>Memory Hierarchy</li>
-  <ul>
-    <li>Multiple levels of memory
-      <ul>
-        <li>Registers (fastest, smallest, most expensive)</li>
-        <li>Cache (L1, L2, L3)</li>
-        <li>Main memory (RAM)</li>
-        <li>Disk (HDD, SSD)</li>
-        <li>Distributed file systems</li>
-      </ul>
-    </li>
-    <li>Cache coherence and memory management</li>
-    <li>Virtual memory</li>
-  </ul>
-  <li>Pipelining</li>
-  <ul>
-      <li>Pipeline Stages
-        <ul>
-          <li>Fetch - Get instruction from memory</li>
-          <li>Decode - Determine instruction type and operands</li>
-          <li>Execute - Perform ALU operation</li>
-          <li>Memory Access - Load/store data if needed</li>
-          <li>Write Back - Store results in registers</li>
-        </ul>
-      </li>
-      <li>Hazards
-        <ul>
-          <li>Structural - Hardware resource conflicts</li>
-          <li>Data - Instruction depends on result of prior instruction</li>
-          <li>Control - Delays from branches and jumps</li>
-        </ul>
-      </li>
-      <li>Instruction-level parallelism</li>
-    </ul>
-  </li>
-  <li>Parallel processing
-    <ul>
-      <li>Multiple processors working simultaneously</li>
-      <li>Types
-        <ul>
-          <li>SIMD (Single Instruction Multiple Data)</li>
-          <li>MIMD (Multiple Instruction Multiple Data)</li>
-          <li>Multicore processors</li>
-        </ul>
-      </li>
-      <li>Thread-level parallelism</li>
-    </ul>
-  </li>
-  <li>I/O devices</li>
-  <li>Performance optimization</li>
-  <li>Power and energy management</li>
-  <li>System integration</li>
-  <li>Security</li>
-  <li>Reliability and Fault Tolerance</li>
-</ul>
+<h3>ISA (instruction set architecture)</h3>
+<p>ISA is an interface between hardware and software; historically, CISC dominated the industry due to [reasons]; in recent years, RISC has become more popular due to [reasons]</p>
+<p>Important things to consider here: instruction formats, addressing modes, registers</p>
+
+<h3>Memory Hierarchy</h3>
+<p>Takes advantage of principle of locality (temporal and spatial) and cost-performance trade-offs.</p>
+<img src="../assets/memory_hierarchy.png" alt="Memory Hierarchy" style="width: 70%;">
+<p>It consists of multiple levels of memory: registers, cache, main memory, disk, distributed file systems.</p>
+<p>Important things to consider here: cache coherence, memory management, virtual memory.</p>
+
+<h3>Pipelining</h3>
+<p>It has the following stages: Fetch, Decode, Execute, Memory Access, Write Back.</p>
+<p>Important things to consider here: hazards (structural, data, control), instruction-level parallelism.</p>
+
+<h3>Parallel processing</h3>
+<p>Multiple processors working simultaneously.</p>
+<p>Important things to consider here: types (SIMD, MIMD, Multicore processors), thread-level parallelism.</p>
+
+<h3>I/O devices</h3>
+<p>Devices that connect to the computer system.</p>
+<p>Important things to consider here: types, performance considerations.</p>
+
+<h3>Performance optimization</h3>
+<p>Important things to consider here: instruction-level parallelism, memory hierarchy, parallel processing.</p>
+
+<h3>Power and energy management</h3>
+<p>Important things to consider here: power consumption, energy efficiency.</p>
 
 <img src="../assets/hardware_org.png" alt="Hardware Organization" style="width: 70%;">
-<img src="../assets/memory_hierarchy.png" alt="Memory Hierarchy" style="width: 70%;">
 
 <h2>Contact</h2>
 <ul>
