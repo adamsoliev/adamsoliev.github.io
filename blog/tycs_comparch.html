@@ -34,7 +34,8 @@ Total theoretical peak bandwidth: 268.8 GB/s + 204.8 GB/s = 473.6 GB/s (441 GiB/
 <p>When a word is not found in the cache, the word must be fetched from a lower level in the hierarchy (which may be another cache or the main memory) and placed in the cache before continuing. Multiple words, called a block (or line), are moved for efficiency and locality reasons. Depending on its placement, cache can be seen as n-way associative set-associative, direct-mapped, or fully-associative.</p>
 <p>Caching reads is easy, but caching writes is more difficult. There are three strategies: write-through and write-back.</p>
 <p>On cache level, a preferred measure of performance is miss rate or misses per instruction. On a memory level, a better measure is average memory access time. On a processor level, execution time is usually what matters.</p> 
-  
+<p>Virtually all computers since 1975 have used DRAMs for main memory and SRAMs for cache, with one to three levels integrated onto the processor chip with the CPU. PMDs must balance power and performance, and because they have more modest storage needs, PMDs use Flash rather than disk drives, a decision increasingly being followed by desktop computers as well.</p>
+
 <h3>Pipelining</h3>
 <p>It has the following stages: Fetch, Decode, Execute, Memory Access, Write Back.</p>
 <p>Important things to consider here: hazards (structural, data, control), instruction-level parallelism.</p>
