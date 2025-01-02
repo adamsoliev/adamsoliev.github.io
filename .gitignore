@@ -1,4 +1,5 @@
 /.DS_Store
+/git_token.txt
 _site
 .sass-cache
 .jekyll-cache
