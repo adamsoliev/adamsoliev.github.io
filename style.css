@@ -64,11 +64,36 @@ pre {
 }
 
 code {
-    font-family: 'Menlo', 'Courier New', monospace;
+    font-family: "Menlo", "Courier New", monospace;
     font-size: 0.8em;
 }
 
 pre code {
     display: block;
     line-height: 1.5;
+}
+
+.projects-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.project-item {
+    display: flex;
+    align-items: flex-start; /* Vertically center items */
+    padding: 15px 0;
+    border-bottom: 1px solid #eee; /* Horizontal line */
+}
+
+.project-media {
+    width: 150px; /* Adjust size as needed */
+    height: 150px; /* Adjust size as needed */
+    object-fit: cover; /* Crop/scale image nicely */
+    margin-right: 15px; /* Space between media and text */
+    flex-shrink: 0; /* Prevent media from shrinking */
+}
+
+.project-description {
+    flex-grow: 1; /* Allow description to take remaining space */
 }
