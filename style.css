@@ -97,3 +97,31 @@ pre code {
 .project-description {
     flex-grow: 1; /* Allow description to take remaining space */
 }
+
+.contact-icons {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 20px 0; /* Adjust spacing as needed */
+    display: flex;
+    gap: 15px; /* Space between icons */
+}
+
+.contact-icons li {
+    margin-bottom: 0; /* Override default li margin */
+}
+
+.contact-icons img {
+    width: 40px; /* Adjust icon size */
+    height: 40px;
+    vertical-align: middle;
+}
+
+/* Ensure specific ul styling doesn't interfere */
+ul.projects-list,
+ul:not(.contact-icons) {
+    padding-left: 20px; /* Keep padding for other lists */
+}
+
+ul.contact-icons {
+    padding-left: 0; /* Remove padding for icon list */
+}
