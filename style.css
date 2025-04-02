@@ -15,13 +15,12 @@ body {
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 2.5em;
     margin-bottom: 0.5em;
 }
 
 h2 {
     font-size: 1.5em;
-    margin-top: 1.5em;
     margin-bottom: 0.5em;
 }
 
@@ -35,6 +34,13 @@ li {
 
 a {
     word-break: break-word;
+}
+
+hr {
+    border: 0;
+    height: 2px;
+    background: #e4e4e4; /* Match project item border color */
+    margin: 20px 0; /* Adjust spacing */
 }
 
 .david-libre-regular {
@@ -83,7 +89,7 @@ pre code {
     display: flex;
     align-items: flex-start; /* Vertically center items */
     padding: 15px 0;
-    border-bottom: 1px solid #eee; /* Horizontal line */
+    border-bottom: 2px solid #e4e4e4; /* Horizontal line */
 }
 
 .project-media {
