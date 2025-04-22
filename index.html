@@ -1,37 +1,86 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adam Soliev</title>
-  <link href="https://fonts.googleapis.com/css2?family=David+Libre:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="style.css" rel="stylesheet">
-</head>
-<body class="david-libre-regular">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adam Soliev – Portfolio</title>
+    <!-- Typeface -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <script>
+    function setActiveFromHash() {
+      const hash = location.hash || "#projects";
+      document.querySelectorAll(".nav-link").forEach(l =>
+        l.classList.toggle("active", l.getAttribute("href") === hash)
+      );
+    }
+    window.addEventListener("hashchange", setActiveFromHash);
+    setActiveFromHash(); // run on initial load
+  </script>
+  <body class="ibm-plex-mono-regular">
+    <!-- ─────────────────────  SINGLE SHEET  ───────────────────── -->
+    <div class="sheet">
+      <!-- ────────────────────  TOP BAR  ──────────────────── -->
+      <header class="top-bar">
+        <div class="name-icons">
+          <h1 class="site-name">Adam Soliev</h1>
+          <nav class="icon-nav">
+            <a href="https://github.com/adamsoliev" target="_blank" title="GitHub" class="icon-link">
+              <img src="./assets/logos/github.png" alt="GitHub" /></a>
+            <a href="https://x.com/adamsoliev" target="_blank" title="X/Twitter" class="icon-link">
+              <img src="./assets/logos/twitter.png" alt="X" /></a>
+            <a href="mailto:adamsoliev.se@gmail.com" title="Email" class="icon-link">
+              <img src="./assets/logos/email.png" alt="Email" /></a>
+          </nav>
+        </div>
+        <nav class="main-nav" aria-label="Primary">
+          <a href="#projects" class="nav-link active">Projects</a>
+          <a href="#blog" class="nav-link">Blog</a>
+          <a href="#about" class="nav-link">About</a>
+        </nav>
+      </header>
 
-<h1 style="text-align: center;">Adam Soliev</h1>
-<ul class="contact-icons" style="justify-content: center;">
-    <li><a href="https://github.com/adamsoliev" target="_blank" title="Github"><img src="./assets/logos/github.png" alt="Github Icon"></a></li>
-    <li><a href="https://x.com/adamsoliev" target="_blank" title="X"><img src="./assets/logos/twitter.png" alt="X Icon"></a></li>
-    <li><a href="mailto:adamsoliev.se@gmail.com" target="_blank" title="Email"><img src="./assets/logos/email.png" alt="Email Icon"></a></li>
-</ul>
-<hr>
+      <!-- ────────────────────  PROJECTS  ──────────────────── -->
+      <section id="projects" class="content-block">
+        <h2>Projects</h2>
+        <hr class="divider" />
+        <ul class="projects-list">
+          <li class="project-item">
+            <img src="./assets/prj_ganymede.png" alt="Ganymede Preview" class="project-media" />
+            <div class="project-content">
+              <p class="project-title">Ganymede</p>
+              <p class="project-description">A RISC‑V computer system built from scratch running on FPGA.</p>
+              <a href="https://github.com/adamsoliev/Ganymede" target="_blank" class="btn btn-more">More →</a>
+            </div>
+          </li>
+          <li class="project-item">
+            <img src="./assets/queue_app.gif" alt="Queue Preview" class="project-media" />
+            <div class="project-content">
+              <p class="project-title">Queue</p>
+              <p class="project-description">A macOS tool to batch speed up/down, compress & convert videos offline.</p>
+              <a href="./assets/Queue_App_macOS_1.0.0.dmg" download class="btn btn-more">More →</a>
+            </div>
+          </li>
+        </ul>
+      </section>
 
-<h2>pet projects</h2>
-<ul class="projects-list">
-  <li class="project-item">
-    <img src="./assets/prj_ganymede.png" alt="Ganymede Preview" class="project-media">
-    <div class="project-description">
-      <a href="https://github.com/adamsoliev/Ganymede" target="_blank">Ganymede</a> - a RISC-V computer system built from scratch running on FPGA.
+      <!-- ────────────────────  BLOG  ──────────────────── -->
+      <section id="blog" class="content-block">
+        <h2>Blog</h2>
+        <hr class="divider" />
+        <p>Coming soon.</p>
+      </section>
+
+      <!-- ────────────────────  ABOUT  ──────────────────── -->
+      <section id="about" class="content-block">
+        <h2>About</h2>
+        <hr class="divider" />
+        <p>
+          Backend & systems engineer focused on search and data‑intensive systems.<br />
+        </p>
+      </section>
     </div>
-  </li>
-  <li class="project-item">
-    <img src="./assets/queue_app.gif" alt="Queue Preview" class="project-media">
-    <div class="project-description">
-      <a href="./assets/Queue_App_macOS_1.0.0.dmg" target="_blank" download>Queue</a> - a macOS tool to batch speed up/down, compress, and convert videos offline.
-    </div>
-  </li>
-</ul>
-
-</body>
+  </body>
 </html>
