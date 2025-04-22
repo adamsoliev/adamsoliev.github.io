@@ -27,12 +27,9 @@
         <div class="name-icons">
           <h1 class="site-name">Adam Soliev</h1>
           <nav class="icon-nav">
-            <a href="https://github.com/adamsoliev" target="_blank" title="GitHub" class="icon-link">
-              <img src="./assets/logos/github.png" alt="GitHub" /></a>
-            <a href="https://x.com/adamsoliev" target="_blank" title="X/Twitter" class="icon-link">
-              <img src="./assets/logos/twitter.png" alt="X" /></a>
-            <a href="mailto:adamsoliev.se@gmail.com" title="Email" class="icon-link">
-              <img src="./assets/logos/email.png" alt="Email" /></a>
+            <a href="https://github.com/adamsoliev" target="_blank" title="GitHub" class="icon-link"><img src="./assets/logos/github.png" alt="GitHub" /></a>
+            <a href="https://x.com/adamsoliev" target="_blank" title="X/Twitter" class="icon-link"><img src="./assets/logos/twitter.png" alt="X" /></a>
+            <a href="mailto:adamsoliev.se@gmail.com" title="Email" class="icon-link"><img src="./assets/logos/email.png" alt="Email" /></a>
           </nav>
         </div>
         <nav class="main-nav" aria-label="Primary">
@@ -82,5 +79,17 @@
         </p>
       </section>
     </div>
+
+    <!-- Active‑nav auto‑sync with URL hash -->
+    <script>
+      function setActiveFromHash() {
+        const hash = window.location.hash || "#projects";
+        document.querySelectorAll(".nav-link").forEach((l) =>
+          l.classList.toggle("active", l.getAttribute("href") === hash)
+        );
+      }
+      window.addEventListener("hashchange", setActiveFromHash);
+      window.addEventListener("DOMContentLoaded", setActiveFromHash);
+    </script>
   </body>
 </html>
