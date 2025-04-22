@@ -247,3 +247,43 @@
   .icon-link:hover img {
     transform: translateY(-2px);
   }
+
+/* Mobile responsiveness - hide navbar on smaller screens */
+@media (max-width: 600px) {
+  .main-nav {
+    display: none;  /* Hide the navigation completely on mobile */
+  }
+  
+  /* Adjust spacing since nav is gone */
+  .top-bar {
+    margin-bottom: 15px;
+  }
+
+  .project-item {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  /* Reduce image size and center it */
+  .project-media {
+    width: 100px;
+    height: 100px;
+    align-self: left;
+  }
+  
+  /* Center the project content */
+  .project-content {
+    align-items: left;
+    text-align: left;
+  }
+  
+  /* Ensure project title stays visible */
+  .project-title {
+    font-size: calc(var(--font-size) * 1.1);
+  }
+  
+  /* Make description a bit smaller */
+  .project-description {
+    font-size: calc(var(--font-size) * 0.9);
+  }
+}
