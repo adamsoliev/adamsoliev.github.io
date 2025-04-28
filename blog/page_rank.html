@@ -1,0 +1,246 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adam Soliev – Portfolio</title>
+    <!-- Typeface -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+    <style>
+    .where-heading   { font-weight: bold; font-size: .8rem; margin-left: 250px; }
+    .where-table     { border-collapse: collapse; font-size: .8rem; margin-left: 250px;}
+    </style>
+
+  </head>
+  <script>
+    function setActiveFromHash() {
+      const hash = location.hash || "#projects";
+      document.querySelectorAll(".nav-link").forEach(l =>
+        l.classList.toggle("active", l.getAttribute("href") === hash)
+      );
+    }
+    window.addEventListener("hashchange", setActiveFromHash);
+    setActiveFromHash(); // run on initial load
+  </script>
+  <body class="ibm-plex-mono-regular">
+    <!-- ─────────────────────  SINGLE SHEET  ───────────────────── -->
+    <div class="sheet">
+        <!-- ────────────────────  TOP BAR  ──────────────────── -->
+        <header class="top-bar">
+          <div class="name-colors">
+            <h1 class="site-name">Adam Soliev</h1>
+            <div class="color-bar">
+              <!-- Color rectangles to mimic the reference image -->
+              <div class="color-rect red"></div>
+              <div class="color-rect green"></div>
+              <div class="color-rect blue"></div>
+              <div class="color-rect cyan"></div>
+              <div class="color-rect yellow"></div>
+              <div class="color-rect magenta"></div>
+              <div class="color-rect black"></div>
+              <div class="color-rect light-gray"></div>
+              <div class="color-rect gray"></div>
+              <div class="color-rect darker-gray"></div>
+              <div class="color-rect darkest-gray"></div>
+              <div class="color-rect dark-gray"></div>
+              <div class="color-rect black-2"></div>
+              <div class="color-rect light-green"></div>
+              <div class="color-rect dark-green"></div>
+              <div class="color-rect navy"></div>
+              <div class="color-rect royal-blue"></div>
+              <div class="color-rect maroon"></div>
+              <div class="color-rect brown"></div>
+              <div class="color-rect orange"></div>
+            </div>
+          </div>
+          <nav class="main-nav" aria-label="Primary">
+            <a href="../index.html" class="nav-link">Projects</a>
+            <a href="#blog" class="nav-link active">Blog</a>
+            <a href="#about" class="nav-link">About</a>
+          </nav>
+        </header>
+
+        <!-- ─────────────────────  POST  ───────────────────── -->
+        <section class="post">
+            <h1>PageRank</h1>
+            <p>
+                Imagine you are at the beginning of the Internet and trying to find the official website of ebay, which you overheard some people talking about. So you search, "ebay".
+                What you are looking for is obviously www.ebay.com, but what comes up is a bunch of random websites that mention it one way or another. In this hypothetical example,
+                what happened is the search engine tried to match the query terms to the billions of web pages naively. It mistakenly ranked noise or spam over the actual
+                website you were looking for. Now to address this issue, you think about the hyperlinked structure of the web and come up with an idea of leveraging
+                in-link and out-link counts to help you rank pages, in addition to literal query term matches. This helps but you notice that there seem to be a lot of pages
+                that specifically target these simple count-based ranking algorithms and manipulate the results. Now you think about the problem a bit harder and come up with
+                two criteria to judge whether a page is important or not.
+                <ul>
+                    <li>higher the count of in-links, higher the page's score</li>
+                    <li>higher the rank of the page where the in-link is from, higher the page's score</li>
+                </ul>
+
+                In other words, "a page has high rank if the sum of the ranks of its backlinks is high"<sup><a href="#ref1">1</a></sup>.
+            </p>
+            <p>
+                The above intuition can be formalized as follows:
+            </p>
+            <p>
+                <!-- PageRank formula -->
+                <math display="block">
+                <mrow>
+                    <!-- PR(u) -->
+                    <mi>PR</mi><mo>(</mo><mi>u</mi><mo>)</mo>
+                    <mo>=</mo>
+
+                    <!-- λ / N -->
+                    <mfrac><mi>&#x03BB;</mi><mi>N</mi></mfrac>
+                    <mo>+</mo>
+
+                    <!-- (1 − λ)  (use U+2212) -->
+                    <mo>(</mo><mn>1</mn><mo>&#x2212;</mo><mi>&#x03BB;</mi><mo>)</mo>
+                    <mo>&#x2062;</mo><!-- invisible multiplication -->
+
+                    <!-- Σ_{v∈B_u} -->
+                    <munderover>
+                    <mo>&Sum;</mo>
+                    <mrow>
+                        <mi>v</mi><mo>&#x2208;</mo><msub><mi>B</mi><mi>u</mi></msub>
+                    </mrow>
+                    <none/>
+                    </munderover>
+
+                    <!--  PR(v) / L_v  -->
+                    <mfrac>
+                    <mrow><mi>PR</mi><mo>(</mo><mi>v</mi><mo>)</mo></mrow>
+                    <msub><mi>L</mi><mi>v</mi></msub>
+                    </mfrac>
+                </mrow>
+                </math>
+
+                <!-- Explanations -->
+                <p class="where-heading">where:</p>
+                <table class="where-table">
+                  <tr><td class="symbol"><math><mi>&#x03BB;</mi></math></td>
+                      <td>probability of jumping to a random page (e.g.&nbsp;0.15)</td></tr>
+
+                  <tr><td class="symbol"><math><mi>N</mi></math></td>
+                      <td>total number of pages in the graph</td></tr>
+
+                  <tr><td class="symbol"><math><mn>1</mn><mo>&#x2212;</mo><mi>&#x03BB;</mi></math></td>
+                      <td>probability of following an out-link</td></tr>
+
+                  <tr><td class="symbol">
+                        <math>
+                          <munderover>
+                            <mo>&Sum;</mo>
+                            <mrow>
+                              <mi>v</mi><mo>&#x2208;</mo><msub><mi>B</mi><mi>u</mi></msub>
+                            </mrow>
+                            <none/>
+                          </munderover>
+                        </math>
+                      </td>
+                      <td>sum over all pages <i>v</i> that link to page <i>u</i> (set <math><msub><mi>B</mi><mi>u</mi></msub></math>)</td></tr>
+
+                  <tr><td class="symbol"><math><mi>PR</mi><mo>(</mo><mi>v</mi><mo>)</mo></math></td>
+                      <td>current PageRank score of page&nbsp;<i>v</i></td></tr>
+
+                  <tr><td class="symbol"><math><msub><mi>L</mi><mi>v</mi></msub></math></td>
+                      <td>number of out-links from page&nbsp;<i>v</i></td></tr>
+                </table>
+            </p>
+            <p>
+                Ignore the first part of the equation for now (since we didn't talk about it yet). The above two bullet points directly map to the second part. The count
+                of pages that link to page <i>u</i> is represented by <math><msub><mi>B</mi><mi>u</mi></msub></math> and the rank of each page that links to <i>u</i> is represented
+                by <math><msub><mi>PR</mi><mo>(</mo><mi>v</mi><mo>)</mo></msub></math>. In simple terms, the second part is essentially saying, "take all of the pages that link
+                to page <i>u</i>, calculate each's contribution by dividing each's rank by the number of out-links each has and sum them up."
+            </p>
+            <p>
+                To understand the first part intuitively, let's introduce a random web surfer who hops from page to page by following out-links, with an occasional “random jump”
+                (e.g., a person might visit different pages on a news site and then jump to a youtube). The first part of the above equation accounts for this random jumping.
+                To be more precise, given there is a 1/N chance of coming to the page <i>u</i> randomly, the contribution of the random jump will be λ/N.
+                In other words, the rank of page <i>u</i> is influenced not only by link-following (two bullet points above) but also some random jumps.
+            </p>
+            <p>
+                Moving higher/from higher level of abstraction, the above per-page equation can be expressed as a matrix equation for a vector of PageRank values:
+            </p>
+            <p>
+                <math display="block">
+                    <mrow>
+                        <!-- R(o) -->
+                        <!-- <mi>R</mi><mo>(</mo><mi>u</mi><mo>)</mo> -->
+                        <msub><mi>R</mi><mi>k + 1</mi></msub>
+                        <mo>=</mo>
+                        <mo>T</mo>
+                        <mo>&#x2062;</mo><!-- invisible multiplication -->
+                        <msub><mi>R</mi><mi>k</mi></msub>
+                    </mrow>
+                </math>
+
+                <!-- Explanations -->
+                <p class="where-heading">where:</p>
+                <table class="where-table">
+                  <tr><td class="symbol"><math><msub><mi>R</mi><mi>k + 1</mi></msub></math></td>
+                      <td>new ranks</td></tr>
+
+                  <tr><td class="symbol"><math><mi>T</mi></math></td>
+                      <td>transition probabilities for random surfer model</td></tr>
+
+                  <tr><td class="symbol"><math><msub><mi>R</mi><mi>k</mi></msub></math></td>
+                      <td>old ranks</td></tr>
+                </table>
+            </p>
+            <p>
+                You can think of <math><msub><mi>R</mi><mi>k</mi></msub></math> as the vector of page ranks after <i>k</i> iterations.
+                (<math><msub><mi>R</mi><mi>0</mi></msub></math> usually starts uniform, e.g., 1/N).
+                In each iteration, we update the ranks using the transition probabilities matrix <math><mi>T</mi></math>,
+                where <math><msub><mi>T</mi><mi>ij</mi></msub></math> represents the probability of going from page <math><msub><mi>i</mi></msub></math> to page
+                <math><msub><mi>j</mi></msub></math> and is equal to:
+                <math display="block">
+                <mrow>
+                    <!-- PR(u) -->
+                    <msub><mi>T</mi><mi>ij</mi></msub>
+                    <mo>=</mo>
+
+                    <!-- λ / N -->
+                    <mfrac><mi>&#x03BB;</mi><mi>N</mi></mfrac>
+                    <mo>+</mo>
+
+                    <!-- (1 − λ)  (use U+2212) -->
+                    <mo>(</mo><mn>1</mn><mo>&#x2212;</mo><mi>&#x03BB;</mi><mo>)</mo>
+                    <mo>&#x2062;</mo><!-- invisible multiplication -->
+
+                    <!--  PR(v) / L_v  -->
+                    <mfrac>
+                    <mrow><mi>1</mi></mrow>
+                    <msub><mi>L</mi><mi>v</mi></msub>
+                    </mfrac>
+                </mrow>
+                </math>
+            </p>
+            <p>
+                When <math><msub><mi>R</mi><mi>k + 1</mi></msub></math><mo>=</mo><math><msub><mi>R</mi><mi>k</mi></msub></math>, we have reached
+                the stationary distribution, which is the final ranks of the pages.
+            </p>
+            <p>
+                To summarize, PageRank is an example of query-independent metadata that can improve ranking for web search. It is relatively objective
+                and addresses the above mentioned issues well.
+            </p>
+
+            <h2>References</h2>
+            <div class="citation">
+              <p id="ref1"><sup>1</sup> <a href="http://ilpubs.stanford.edu:8090/422/1/1999-66.pdf" target="_blank">The PageRank Citation Ranking: Bringing Order to the Web</a>, Stanford University, 1999.</p>
+            </div>
+        </section>
+        <!-- ────────────────────  FOOTER ICONS  ──────────────────── -->
+        <footer class="icon-footer">
+            <nav class="icon-nav">
+            <a href="https://github.com/adamsoliev" target="_blank" title="GitHub" class="icon-link"><img src="../assets/logos/github.png" alt="GitHub" /></a>
+            <a href="https://x.com/adamsoliev" target="_blank" title="X/Twitter" class="icon-link"><img src="../assets/logos/twitter.png" alt="X" /></a>
+            <a href="mailto:adamsoliev.se@gmail.com" title="Email" class="icon-link"><img src="../assets/logos/email.png" alt="Email" /></a>
+            </nav>
+        </footer>
+    </div>
+    </body>
+  </html>
