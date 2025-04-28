@@ -1,17 +1,17 @@
 :root {
     /* single source of truth */
-  
+
     /* for button/link */
     --btn-w: 110px; /* fixed width */
-    --btn-h: 30px;  /* fixed height */
+    --btn-h: 30px; /* fixed height */
     --btn-yellow: #fff176;
     --btn-yellow-hover: #111;
-  
+
     /* for font */
     --font-size: 14px;
-  }
-  
-  body {
+}
+
+body {
     font-family: "IBM Plex Mono", monospace;
     font-size: var(--font-size);
     margin: 0;
@@ -19,10 +19,10 @@
     background: #e9e9e9; /* subtly different from sheet */
     display: flex;
     justify-content: center;
-  }
-  
-  /* ── parent container mimics single contiguous panel ── */
-  .sheet {
+}
+
+/* ── parent container mimics single contiguous panel ── */
+.sheet {
     background: #ffffff;
     border: 1px solid #888;
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25); /* sharp, unblurred */
@@ -31,106 +31,149 @@
     width: calc(100% - 48px); /* keep gutter on mobile */
     box-sizing: border-box;
     position: relative;
-  }
-  
-  h1 {
+}
+
+h1 {
     font-size: calc(var(--font-size) * 1.3);
     margin: 0;
     font-weight: 700;
-  }
-  
-  h2 {
+}
+
+h2 {
     font-size: calc(var(--font-size) * 1.3);
     margin: 0 0 4px 0; /* reduced spacing below section titles */
     font-weight: 700;
-  }
-  
-  /* ── dashed horizontal separators ── */
-  .divider {
+}
+
+/* ── dashed horizontal separators ── */
+.divider {
     border: 0;
     border-top: 1px dashed #888;
     margin: 0px 0 12px 0; /* narrower gap above dash */
-  }
-  
-  section {
+}
+
+section {
     margin-bottom: 20px;
-  }
-  
-  /* ─────────────────────────  HEADER  ───────────────────────── */
-  .top-bar {
+}
+
+/* ─────────────────────────  HEADER  ───────────────────────── */
+.top-bar {
     display: flex;
     flex-direction: column;
     gap: 6px; /* tighter vertical spacing between name and nav */
     margin-bottom: 20px;
-  }
-  
-  .name-colors {
+}
+
+.name-colors {
     display: flex;
     align-items: center;
     gap: 16px;
     width: 100%;
-  }
-  
-  /* Color bar styling */
-  .color-bar {
+}
+
+/* Color bar styling */
+.color-bar {
     display: flex;
     flex-grow: 1;
     height: 12px;
-  }
-  
-  .color-rect {
+}
+
+.color-rect {
     flex-grow: 1;
     height: 100%;
-  }
-  
-  /* Color definitions for the rectangles */
-  .color-rect.red { background-color: #e53935; }
-  .color-rect.green { background-color: #43a047; }
-  .color-rect.blue { background-color: #1e88e5; }
-  .color-rect.cyan { background-color: #00acc1; }
-  .color-rect.yellow { background-color: #fdd835; }
-  .color-rect.magenta { background-color: #d81b60; }
-  .color-rect.black { background-color: #000000; }
-  .color-rect.light-gray { background-color: #e0e0e0; }
-  .color-rect.gray { background-color: #9e9e9e; }
-  .color-rect.darker-gray { background-color: #757575; }
-  .color-rect.darkest-gray { background-color: #616161; }
-  .color-rect.dark-gray { background-color: #424242; }
-  .color-rect.black-2 { background-color: #212121; }
-  .color-rect.light-green { background-color: #8bc34a; }
-  .color-rect.dark-green { background-color: #2e7d32; }
-  .color-rect.navy { background-color: #303f9f; }
-  .color-rect.royal-blue { background-color: #1a237e; }
-  .color-rect.maroon { background-color: #b71c1c; }
-  .color-rect.brown { background-color: #795548; }
-  .color-rect.orange { background-color: #ff9800; }
-  
-  /* main nav adopts hard‑edge button styling */
-  .main-nav {
+}
+
+/* Color definitions for the rectangles */
+.color-rect.red {
+    background-color: #e53935;
+}
+.color-rect.green {
+    background-color: #43a047;
+}
+.color-rect.blue {
+    background-color: #1e88e5;
+}
+.color-rect.cyan {
+    background-color: #00acc1;
+}
+.color-rect.yellow {
+    background-color: #fdd835;
+}
+.color-rect.magenta {
+    background-color: #d81b60;
+}
+.color-rect.black {
+    background-color: #000000;
+}
+.color-rect.light-gray {
+    background-color: #e0e0e0;
+}
+.color-rect.gray {
+    background-color: #9e9e9e;
+}
+.color-rect.darker-gray {
+    background-color: #757575;
+}
+.color-rect.darkest-gray {
+    background-color: #616161;
+}
+.color-rect.dark-gray {
+    background-color: #424242;
+}
+.color-rect.black-2 {
+    background-color: #212121;
+}
+.color-rect.light-green {
+    background-color: #8bc34a;
+}
+.color-rect.dark-green {
+    background-color: #2e7d32;
+}
+.color-rect.navy {
+    background-color: #303f9f;
+}
+.color-rect.royal-blue {
+    background-color: #1a237e;
+}
+.color-rect.maroon {
+    background-color: #b71c1c;
+}
+.color-rect.brown {
+    background-color: #795548;
+}
+.color-rect.orange {
+    background-color: #ff9800;
+}
+
+/* main nav adopts hard‑edge button styling */
+.main-nav {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
-  }
-  
-  .nav-link {
+}
+
+.nav-link {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-start;   /* label left‑aligned */
-    padding-left: 24px;            /* space for dot */
+    justify-content: flex-start; /* label left‑aligned */
+    padding-left: 24px; /* space for dot */
     width: var(--btn-w);
     height: var(--btn-h);
     border: 1px solid #111;
     background: #fdfdfd;
-    box-shadow: 3px 3px 0 rgba(0,0,0,.25);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.25);
     text-decoration: none;
     color: #111;
     font-weight: 500;
-    transition: transform .05s ease-out, box-shadow .05s ease-out;
-  }
-  
-  .nav-link::before {             /* hidden by default */
-    content: '';
+    transition:
+        transform 0.05s ease-out,
+        box-shadow 0.05s ease-out;
+}
+
+.nav-link::before {
+    /* hidden by default */
+    content: "";
     position: absolute;
     left: 8px;
     top: 50%;
@@ -139,61 +182,61 @@
     height: 8px;
     border-radius: 50%;
     display: none;
-  }
-  
-  .nav-link.active::before,
-  .nav-link:focus-visible::before {
-    display: block;               /* show only on active/focus */
+}
+
+.nav-link.active::before,
+.nav-link:focus-visible::before {
+    display: block; /* show only on active/focus */
     background: #d60000;
-  }
-  
-  .nav-link:hover,
-  .nav-link:focus-visible {
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
     transform: translate(-1px, -1px);
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
     outline: none;
-  }
-  
-  /* ─────────────────────────  PROJECTS  ───────────────────────── */
-  .projects-list {
+}
+
+/* ─────────────────────────  PROJECTS  ───────────────────────── */
+.projects-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
     gap: 24px;
-  }
-  
-  .project-item {
+}
+
+.project-item {
     display: flex;
     gap: 16px;
-  }
-  
-  .project-media {
+}
+
+.project-media {
     width: 140px;
     height: 140px;
     object-fit: cover;
     flex-shrink: 0;
     border: 1px solid #ccc;
-  }
-  
-  .project-content {
+}
+
+.project-content {
     display: flex;
     flex-direction: column;
     gap: 8px;
-  }
-  
-  .project-title {
+}
+
+.project-title {
     font-weight: 600;
     margin: 0;
-  }
-  
-  .project-description {
+}
+
+.project-description {
     margin: 0;
-  }
-  
-  /* ─────────────────────────  BUTTONS  ───────────────────────── */
-  .btn {
+}
+
+/* ─────────────────────────  BUTTONS  ───────────────────────── */
+.btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -203,87 +246,132 @@
     box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.25);
     text-decoration: none;
     font-weight: 500;
-    transition: transform 0.05s ease-out, box-shadow 0.05s ease-out, background 0.05s ease-out, color 0.05s ease-out;
-  }
-  
-  .btn:hover,
-  .btn:focus-visible {
+    transition:
+        transform 0.05s ease-out,
+        box-shadow 0.05s ease-out,
+        background 0.05s ease-out,
+        color 0.05s ease-out;
+}
+
+.btn:hover,
+.btn:focus-visible {
     transform: translate(-1px, -1px);
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
     outline: none;
-  }
-  
-  /* yellow "More →" buttons */
-  .btn-more {
+}
+
+/* yellow "More →" buttons */
+.btn-more {
     background: var(--btn-yellow);
     color: #111;
-  }
-  
-  .btn-more:hover,
-  .btn-more:focus-visible {
+}
+
+.btn-more:hover,
+.btn-more:focus-visible {
     background: var(--btn-yellow-hover);
     color: #fff;
-  }
-  
-  /* ─────────────────────────  FOOTER ICONS  ───────────────────────── */
-  .icon-footer {
+}
+
+/* ─────────────────────────  FOOTER ICONS  ───────────────────────── */
+.icon-footer {
     margin-top: 30px;
-    padding-top: 20px; 
+    padding-top: 20px;
     border-top: 1px dashed #888;
-  }
-  
-  .icon-nav {
+}
+
+.icon-nav {
     display: flex;
     justify-content: center;
     gap: 24px;
-  }
-  
-  .icon-link img {
+}
+
+.icon-link img {
     width: 28px;
     height: 28px;
     transition: transform 0.2s ease;
-  }
-  
-  .icon-link:hover img {
+}
+
+.icon-link:hover img {
     transform: translateY(-2px);
-  }
+}
 
 /* Mobile responsiveness - hide navbar on smaller screens */
 @media (max-width: 600px) {
-  .main-nav {
-    display: none;  /* Hide the navigation completely on mobile */
-  }
-  
-  /* Adjust spacing since nav is gone */
-  .top-bar {
-    margin-bottom: 15px;
-  }
+    .main-nav {
+        display: none; /* Hide the navigation completely on mobile */
+    }
 
-  .project-item {
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  /* Reduce image size and center it */
-  .project-media {
-    width: 100px;
-    height: 100px;
-    align-self: left;
-  }
-  
-  /* Center the project content */
-  .project-content {
-    align-items: left;
+    /* Adjust spacing since nav is gone */
+    .top-bar {
+        margin-bottom: 15px;
+    }
+
+    .project-item {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Reduce image size and center it */
+    .project-media {
+        width: 100px;
+        height: 100px;
+        align-self: left;
+    }
+
+    /* Center the project content */
+    .project-content {
+        align-items: left;
+        text-align: left;
+    }
+
+    /* Ensure project title stays visible */
+    .project-title {
+        font-size: calc(var(--font-size) * 1.1);
+    }
+
+    /* Make description a bit smaller */
+    .project-description {
+        font-size: calc(var(--font-size) * 0.9);
+    }
+}
+
+/* ─────────────────────────  MATH  ───────────────────────── */
+math[display="block"] {
+    display: block;
+    margin: 1.2em 0 1.2em 2em;
+    font-size: var(--font-size);
     text-align: left;
-  }
-  
-  /* Ensure project title stays visible */
-  .project-title {
-    font-size: calc(var(--font-size) * 1.1);
-  }
-  
-  /* Make description a bit smaller */
-  .project-description {
-    font-size: calc(var(--font-size) * 0.9);
-  }
+}
+
+.where-heading {
+    font-weight: bold;
+    margin: 0.8em 0 0.4em 2em;
+    font-size: var(--font-size);
+}
+
+.where-table {
+    border-collapse: collapse;
+    margin: 0 0 1.2em 2em;
+    font-size: var(--font-size);
+}
+
+.where-table td {
+    padding: 0.3em 0.6em 0.3em 0;
+    vertical-align: top;
+}
+
+.where-table td.symbol {
+    width: 120px; /* Fixed width for first column */
+    font-family: "IBM Plex Mono", monospace;
+}
+
+/* Add highlighting for references */
+.citation {
+    margin-left: 2em;
+    font-size: var(--font-size);
+}
+
+/* Ensure inline math elements maintain proper sizing */
+math {
+    font-size: var(--font-size);
 }
