@@ -68,18 +68,18 @@
         <section class="post">
             <h1>PageRank</h1>
             <p>
-                Imagine you are at the beginning of the Internet and trying to find the official website of ebay, which you overheard some people talking about. So you search, "ebay".
-                What you are looking for is obviously www.ebay.com, but what comes up is a bunch of random websites that mention it one way or another. In this hypothetical example,
-                what happened is the search engine tried to match the query terms to the billions of web pages naively. It mistakenly ranked noise or spam over the actual
-                website you were looking for. Now to address this issue, you think about the hyperlinked structure of the web and come up with an idea of leveraging
-                in-link and out-link counts to help you rank pages, in addition to literal query term matches. This helps but you notice that there seem to be a lot of pages
-                that specifically target these simple count-based ranking algorithms and manipulate the results. Now you think about the problem a bit harder and come up with
-                two criteria to judge whether a page is important or not.
-                <ul>
-                    <li>higher the count of in-links, higher the page's score</li>
-                    <li>higher the rank of the page where the in-link is from, higher the page's score</li>
-                </ul>
-
+                Imagine the early web. You type <i>ebay</i> into a hypotherical search engine hoping to reach <i>www.ebay.com</i>, but the results
+                are a list of unrelated pages that merely mention the word. A simple term-matching algorithm of the search engine couldn't separate
+                the real site from the noise. You think, hmm. Is there a way to rank pages based on their relative importance and use that alongside
+                the term matching?
+            </p>
+            <p>
+                Your first idea is use the web's hyperlink structure. Specifically, you think of using count of in-links (links pointing to a page)
+                but quickly realize that although it is helpful, it is easy to game with a simple program that creates huge number of pages,
+                artifically inflating your counts. In fact, you conclude that any easily controllable on-page factor is prone to manipulation.
+            </p>
+            <p>
+                Your next idea is to improve the in-link count by weighting the importance of the linking page.
                 In other words, "a page has high rank if the sum of the ranks of its backlinks is high"<sup><a href="#ref1">1</a></sup>.
             </p>
             <p>
@@ -151,27 +151,29 @@
                 </table>
             </p>
             <p>
-                Ignore the first part of the equation for now (since we didn't talk about it yet). The above two bullet points directly map to the second part. The count
-                of pages that link to page <i>u</i> is represented by <math><msub><mi>B</mi><mi>u</mi></msub></math> and the rank of each page that links to <i>u</i> is represented
-                by <math><msub><mi>PR</mi><mo>(</mo><mi>v</mi><mo>)</mo></msub></math>. In simple terms, the second part is essentially saying, "take all of the pages that link
-                to page <i>u</i>, calculate each's contribution by dividing each's rank by the number of out-links each has and sum them up."
+                Putting the first term aside for the moment, the above two ideas (in-link count and the importance of linking page) directly map to the second term.
+                Page <i>u</i>'s in-link count is represented by <math><msub><mi>B</mi><mi>u</mi></msub></math> and the rank of each linking page <i>v</i> is
+                <math><msub><mi>PR</mi><mo>(</mo><mi>v</mi><mo>)</mo></msub></math>. In simple terms, the second part is essentially saying, "for every page
+                that points to <i>u</i>, take its rank, divide by its out-link count, and sum these contributions."
             </p>
             <p>
-                To understand the first part intuitively, let's introduce a random web surfer who hops from page to page by following out-links, with an occasional “random jump”
-                (e.g., a person might visit different pages on a news site and then jump to a youtube). The first part of the above equation accounts for this random jumping.
-                To be more precise, given there is a 1/N chance of coming to the page <i>u</i> randomly, the contribution of the random jump will be λ/N.
-                In other words, the rank of page <i>u</i> is influenced not only by link-following (two bullet points above) but also some random jumps.
+                The first term models the “random surfer.”  Most of the time a user follows links, but with
+                probability&nbsp;λ they teleport to a completely new page.  Because any of the <i>N</i> pages
+                is equally likely, the chance of landing on page&nbsp;<i>u</i> is 1 / <i>N</i>, giving a
+                random-jump contribution of λ / <i>N</i>.  Page&nbsp;<i>u</i>’s final score therefore mixes
+                two effects: link-following (the second term) and occasional random jumps (the first term).
             </p>
             <p>
-                Moving higher/from higher level of abstraction, the above per-page equation can be expressed as a matrix equation for a vector of PageRank values:
+                At the vector level the per-page formula becomes a simple power-iteration step:
             </p>
             <p>
                 <math display="block">
                     <mrow>
                         <!-- R(o) -->
-                        <!-- <mi>R</mi><mo>(</mo><mi>u</mi><mo>)</mo> -->
                         <msub><mi>R</mi><mi>k + 1</mi></msub>
                         <mo>=</mo>
+
+                        <!-- TR(n) -->
                         <mo>T</mo>
                         <mo>&#x2062;</mo><!-- invisible multiplication -->
                         <msub><mi>R</mi><mi>k</mi></msub>
@@ -194,12 +196,12 @@
             <p>
                 You can think of <math><msub><mi>R</mi><mi>k</mi></msub></math> as the vector of page ranks after <i>k</i> iterations.
                 (<math><msub><mi>R</mi><mi>0</mi></msub></math> usually starts uniform, e.g., 1/N).
-                In each iteration, we update the ranks using the transition probabilities matrix <math><mi>T</mi></math>,
+                In each iteration, you update the ranks using the transition probabilities matrix <math><mi>T</mi></math>,
                 where <math><msub><mi>T</mi><mi>ij</mi></msub></math> represents the probability of going from page <math><msub><mi>i</mi></msub></math> to page
                 <math><msub><mi>j</mi></msub></math> and is equal to:
                 <math display="block">
                 <mrow>
-                    <!-- PR(u) -->
+                    <!-- T(ij) -->
                     <msub><mi>T</mi><mi>ij</mi></msub>
                     <mo>=</mo>
 
@@ -211,7 +213,7 @@
                     <mo>(</mo><mn>1</mn><mo>&#x2212;</mo><mi>&#x03BB;</mi><mo>)</mo>
                     <mo>&#x2062;</mo><!-- invisible multiplication -->
 
-                    <!--  PR(v) / L_v  -->
+                    <!--  1 / L_v  -->
                     <mfrac>
                     <mrow><mi>1</mi></mrow>
                     <msub><mi>L</mi><mi>v</mi></msub>
@@ -220,12 +222,7 @@
                 </math>
             </p>
             <p>
-                When <math><msub><mi>R</mi><mi>k + 1</mi></msub></math><mo>=</mo><math><msub><mi>R</mi><mi>k</mi></msub></math>, we have reached
-                the stationary distribution, which is the final ranks of the pages.
-            </p>
-            <p>
-                To summarize, PageRank is an example of query-independent metadata that can improve ranking for web search. It is relatively objective
-                and addresses the above mentioned issues well.
+                You reach a stationary distribution when <math><msub><mi>R</mi><mi>k + 1</mi></msub></math><mo>=</mo><math><msub><mi>R</mi><mi>k</mi></msub></math>, which is the final ranks of the pages.
             </p>
 
             <h2>References</h2>
