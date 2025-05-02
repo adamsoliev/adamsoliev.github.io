@@ -81,14 +81,96 @@
                     <li>
                         <p>
                             Vector space (1960s-1970s)
-                            - simply put, this model assumes that documents and queries are points in a high-dimensional space.
+                            - simply put, this model assumes that documents and queries are points in a high-dimensional weight space.
                             In this context, a distance between document-and-query points can be taken as a measure of relevance. More commonly though, some sort of
                             similarity measure is used. The most successful of these is the <i>cosine correlation</i> similarity measure,
-                            which is defined as the cosine of the angle between the document and query vectors.
+                            which measures the cosine of the angle between the document and query vectors and is defined as:
+                        </p>
+
+                        <!-- Cosine(Dᵢ, Q)  -------------------------------------------------------->
+                        <math display="block">
+                          <mrow>
+                            <!-- Cosine(D_i, Q) -->
+                            <mi>Cosine</mi><mo>(</mo><msub><mi>D</mi><mi>i</mi></msub><mo>,</mo><mi>Q</mi><mo>)</mo>
+                            <mo>=</mo>
+
+                            <!--  ─────────────────────────────────────────────────────────────────── -->
+                            <mfrac>
+
+                              <!-- Numerator:  Σ_{j=1}^{t} d_{ij}·q_j -->
+                              <mrow>
+                                <munderover> <mo>&#x2211;</mo> <mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow> <mi>t</mi>
+                                </munderover>
+                                <msub><mi>d</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub>
+                                <mo>&#x2062;</mo>  <!-- invisible multiplication -->
+                                <msub><mi>q</mi><mi>j</mi></msub>
+                              </mrow>
+
+                              <!-- Denominator:  √( Σ d_{ij}² · Σ q_j² ) -->
+                              <mrow>
+                                <msqrt>
+                                  <mrow>
+                                    <munderover> <mo>&#x2211;</mo> <mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow> <mi>t</mi>
+                                    </munderover>
+                                    <msubsup><mi>d</mi><mrow><mi>i</mi><mi>j</mi></mrow><mn>2</mn></msubsup>
+                                    <mo>&#x2062;</mo>  <!-- invisible multiplication -->
+                                    <munderover> <mo>&#x2211;</mo> <mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow> <mi>t</mi>
+                                    </munderover>
+                                    <msubsup><mi>q</mi><mi>j</mi><mn>2</mn></msubsup>
+                                  </mrow>
+                                </msqrt>
+                              </mrow>
+
+                            </mfrac>
+                            <!--  ─────────────────────────────────────────────────────────────────── -->
+                          </mrow>
+                        </math>
+
+                        <!-- Explanations -->
+                        <p class="where-heading">where:</p>
+                        <table class="where-table">
+                          <tr>
+                            <td class="symbol"><math><msub><mi>D</mi><mi>i</mi></msub></math></td>
+                            <td>vector of term-weights for document <var>i</var></td>
+                          </tr>
+
+                          <tr>
+                            <td class="symbol"><math><mi>Q</mi></math></td>
+                            <td>vector of term-weights for the query</td>
+                          </tr>
+
+                          <tr>
+                            <td class="symbol"><math><msub><mi>d</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math></td>
+                            <td>weight of term&nbsp;<var>j</var> in document&nbsp;<var>i</var></td>
+                          </tr>
+
+                          <tr>
+                            <td class="symbol"><math><msub><mi>q</mi><mi>j</mi></msub></math></td>
+                            <td>weight of term&nbsp;<var>j</var> in the query</td>
+                          </tr>
+
+                          <tr>
+                            <td class="symbol"><math><mi>t</mi></math></td>
+                            <td>number of distinct terms (vector dimensionality)</td>
+                          </tr>
+                          <tr>
+                            <td class="symbol">numerator</td>
+                            <td>dot product of D and Q vectors</td>
+                          </tr>
+                          <tr>
+                            <td class="symbol">denominator</td>
+                            <td>product of Euclidean lengths of D and Q vectors</td>
+                          </tr>
+                        </table>
+
+                        <p>
+                            Note from the formula that this model does take into account term weights and the number of matching terms, which
+                            isn't possible in Boolean retrieval.
                         </p>
                         <p>
-                            Note that this model assumes a continuous relevance score. Because of this, term weighting is an important factor and is usually
-                            taken into account by using variations of <i>tf/idf weighting</i>. </li>
+                            Most commonly used term weights, for both document and query vectors, are based on variations of <i>tf-idf</i>. The <i>tf</i>
+                            reflects the importance of a term in a document or query, while the <i>idf</i> reflects the importance of a term in the collection
+                            of documents (if it occurs in more documents, it is less differentiating).
                         </p>
                 </ul>
             </p>
