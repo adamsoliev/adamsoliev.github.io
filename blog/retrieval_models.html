@@ -69,8 +69,8 @@
             <h2>Symbolic/Exact-match</h2>
             <p>
                 <ul>
-                    <li>Boolean retrieval (1960s) - is a simple model that retrieves documents that contain all terms of the query.
-                        As you can imagine, this model doesn't differentiate between retrieved documents (they are all assumed to be relevant) and
+                    <li>Boolean retrieval (1960s) - assumes that each retrieved document needs to contain all terms of the query. Otherwise,
+                        the document is non-relevant. It doesn't differentiate between retrieved documents (they are all assumed to be relevant) and
                         has no notion of ranking. It also puts search-efficiency burden on the user since simple queries don't work well.</li>
                 </ul>
             </p>
@@ -237,6 +237,224 @@
                             </math>
                             (and similarly for <math><mi>P</mi><mo>(</mo><mi>D</mi><mo>|</mo><mi>NR</mi><mo>)</mo> </math>).
                         </p>
+                        <p>
+                            Another way to express the score is:
+                        </p>
+
+                        <math display="block">
+                          <mrow>
+                            <mo>=</mo>
+                            <mrow style="margin-right:10px;">
+                              <munder>
+                                <mo>&#x220F;</mo>
+                                <mrow>
+                                  <mi>i</mi><mo>:</mo>
+                                  <msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn>
+                                </mrow>
+                              </munder>
+                              <mfrac>
+                                <msub><mi>p</mi><mi>i</mi></msub>
+                                <msub><mi>s</mi><mi>i</mi></msub>
+                              </mfrac>
+                            </mrow>
+                            <!-- <mo>&#x2062;</mo> -->
+                            <mo>&#x22C5;</mo>
+                            <mrow>
+                              <munder>
+                                <mo>&#x220F;</mo>
+                                <mrow>
+                                  <mi>i</mi><mo>:</mo>
+                                  <msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn>
+                                </mrow>
+                              </munder>
+                              <mfrac>
+                                <mrow>
+                                  <mo>(</mo><mn>1</mn><mo>&#x2212;</mo><msub><mi>p</mi><mi>i</mi></msub><mo>)</mo>
+                                </mrow>
+                                <mrow>
+                                  <mo>(</mo><mn>1</mn><mo>&#x2212;</mo><msub><mi>s</mi><mi>i</mi></msub><mo>)</mo>
+                                </mrow>
+                              </mfrac>
+                            </mrow>
+                          </mrow>
+                        </math>
+
+                        <!-- Explanations -->
+                        <p class="where-heading">where:</p>
+                        <table class="where-table">
+                          <tr>
+                            <td class="symbol"><math><msub><mi>p</mi><mi>i</mi></msub></math></td>
+                            <td>prob. term <var>i</var> occurs in a document from the rel. set</td>
+                          </tr>
+                          <tr>
+                            <td class="symbol"><math><msub><mi>s</mi><mi>i</mi></msub></math></td>
+                            <td>prob. term <var>i</var> occurs in a document from the non-rel. set</td>
+                          </tr>
+                          <tr>
+                            <td class="symbol"><math><msub><mi>d</mi><mi>i</mi></msub></math></td>
+                            <td>binary indicator (1 or 0)</td>
+                          </tr>
+                          <tr>
+                            <td class="symbol">first product</td>
+                            <td>contribution from terms present in the document</td>
+                          </tr>
+                          <tr>
+                            <td class="symbol">second product</td>
+                            <td>contribution from terms absent from the document</td>
+                          </tr>
+                        </table>
+
+                        <p>
+                            With a bit of math manipulation, we can rewrite it as:
+                        </p>
+                        <math display="block">
+                          <mrow>
+                            <mo>=</mo>
+                            <!-- product over terms present -->
+                            <mrow style="margin-right:10px;">
+                              <munder>
+                                <mo>&#x220F;</mo>
+                                <mrow>
+                                  <mi>i</mi><mo>:</mo>
+                                  <msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn>
+                                </mrow>
+                              </munder>
+                              <mfrac>
+                                <mrow>
+                                  <msub><mi>p</mi><mi>i</mi></msub>
+                                  <mo stretchy="false">(</mo><mn>1</mn><mo>&#x2212;</mo><msub><mi>s</mi><mi>i</mi></msub><mo stretchy="false">)</mo>
+                                </mrow>
+                                <mrow>
+                                  <msub><mi>s</mi><mi>i</mi></msub>
+                                  <mo stretchy="false">(</mo><mn>1</mn><mo>&#x2212;</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">)</mo>
+                                </mrow>
+                              </mfrac>
+                            </mrow>
+                            <mo>&#x22C5;</mo>
+                            <!-- product over terms absent -->
+                            <mrow>
+                              <munder>
+                                <mo>&#x220F;</mo>
+                                <mrow>
+                                  <mi>i</mi><mo>:</mo>
+                                  <msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn>
+                                </mrow>
+                              </munder>
+                              <mfrac>
+                                <mrow>
+                                  <mn>1</mn><mo>&#x2212;</mo><msub><mi>p</mi><mi>i</mi></msub>
+                                </mrow>
+                                <mrow>
+                                  <mn>1</mn><mo>&#x2212;</mo><msub><mi>s</mi><mi>i</mi></msub>
+                                </mrow>
+                              </mfrac>
+                            </mrow>
+                          </mrow>
+                        </math>
+
+                        <p>
+                            The product on the right is identical for every document, so we drop it. To avoid problems with small numbers
+                            causing accuracy issues, we use the logarithm, which converts the product to a sum:
+                        </p>
+                        <math display="block">
+                          <mrow>
+                            <mo>=</mo>
+                            <munder>
+                              <mo>∑</mo>
+                              <mrow>
+                                <mi>i</mi><mo>:</mo>
+                                <msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn>
+                              </mrow>
+                            </munder>
+                            <mi>log</mi>
+                            <mrow>
+                              <mfrac>
+                                <mrow>
+                                  <msub><mi>p</mi><mi>i</mi></msub>
+                                  <mo>(</mo><mn>1</mn><mo>−</mo><msub><mi>s</mi><mi>i</mi></msub><mo>)</mo>
+                                </mrow>
+                                <mrow>
+                                  <msub><mi>s</mi><mi>i</mi></msub>
+                                  <mo>(</mo><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>i</mi></msub><mo>)</mo>
+                                </mrow>
+                              </mfrac>
+                            </mrow>
+                          </mrow>
+                        </math>
+
+                        <p>If nothing is known about relevant documents, set
+                          <math>
+                            <msub><mi>p</mi><mi>i</mi></msub>
+                            <mo>=</mo>
+                            <mn>0.5</mn>
+                          </math>
+                          (maximum uncertainty) and approximate
+                          <math>
+                            <msub><mi>s</mi><mi>i</mi></msub>
+                            <mo>≈</mo>
+                            <mfrac>
+                              <msub><mi>n</mi><mi>i</mi></msub>
+                              <mi>N</mi>
+                            </mfrac>
+                          </math>
+                          (collection frequency). Plugging those into the weight gives:
+                        </p>
+
+
+                        <math display="block">
+                          <mrow>
+                            <mo>=</mo>
+                            <mi>log</mi>
+                            <mrow>
+                              <mo>(</mo>
+                              <mfrac>
+                                <mrow>
+                                  <mn>0.5</mn>
+                                  <mo stretchy="false">(</mo>
+                                  <mn>1</mn>
+                                  <mo>&#x2212;</mo>
+                                  <mfrac>
+                                    <msub><mi>n</mi><mi>i</mi></msub>
+                                    <mi>N</mi>
+                                  </mfrac>
+                                  <mo stretchy="false">)</mo>
+                                </mrow>
+                                <mrow>
+                                  <mfrac>
+                                    <msub><mi>n</mi><mi>i</mi></msub>
+                                    <mi>N</mi>
+                                  </mfrac>
+                                  <mo stretchy="false">(</mo>
+                                  <mn>1</mn>
+                                  <mo>&#x2212;</mo>
+                                  <mn>0.5</mn>
+                                  <mo stretchy="false">)</mo>
+                                </mrow>
+                              </mfrac>
+                              <mo>)</mo>
+                              <mo>=</mo>
+                              <mi>log</mi>
+                              <mrow>
+                                <mo>(</mo>
+                                <mfrac>
+                                  <mrow>
+                                    <mi>N</mi>
+                                    <mo>&#x2212;</mo>
+                                    <msub><mi>n</mi><mi>i</mi></msub>
+                                  </mrow>
+                                  <msub><mi>n</mi><mi>i</mi></msub>
+                                </mfrac>
+                                <mo>)</mo>
+                              </mrow>
+                            </mrow>
+                          </mrow>
+                        </math>
+
+                        <p>
+                            which is exactly the inverse‑document‑frequency (IDF) weight. Thus BIM naturally collapses to “sum of IDFs” when
+                            no relevance feedback is available.
+                        </p>
+
                     </li>
                     <li>BM25 family (1990s)</li>
                 </ul>
