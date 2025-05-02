@@ -40,8 +40,8 @@ h1 {
 }
 
 h2 {
-    font-size: calc(var(--font-size) * 1.3);
-    margin: 0 0 4px 0; /* reduced spacing below section titles */
+    font-size: var(--font-size);
+    margin: 0;
     font-weight: 700;
 }
 
@@ -374,4 +374,40 @@ math[display="block"] {
 /* Ensure inline math elements maintain proper sizing */
 math {
     font-size: var(--font-size);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: var(--font-size);
+    margin: 20px 0;
+}
+
+.table th {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid #888;
+    font-weight: 700;
+}
+
+.table td {
+    padding: 8px 12px;
+    border-bottom: 1px dashed #ccc;
+    vertical-align: top;
+}
+
+.table td:first-child {
+    width: 120px;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .table {
+        font-size: calc(var(--font-size) * 0.9);
+    }
+
+    .table td:first-child {
+        width: auto;
+    }
 }

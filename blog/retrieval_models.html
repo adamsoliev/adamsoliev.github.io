@@ -1,0 +1,194 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adam Soliev – Portfolio</title>
+    <!-- Typeface -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  </head>
+  <script>
+    function setActiveFromHash() {
+      const hash = location.hash || "#projects";
+      document.querySelectorAll(".nav-link").forEach(l =>
+        l.classList.toggle("active", l.getAttribute("href") === hash)
+      );
+    }
+    window.addEventListener("hashchange", setActiveFromHash);
+    setActiveFromHash(); // run on initial load
+  </script>
+  <body class="ibm-plex-mono-regular">
+    <!-- ─────────────────────  SINGLE SHEET  ───────────────────── -->
+    <div class="sheet">
+        <!-- ────────────────────  TOP BAR  ──────────────────── -->
+        <header class="top-bar">
+          <div class="name-colors">
+            <h1 class="site-name">Adam Soliev</h1>
+            <div class="color-bar">
+              <!-- Color rectangles to mimic the reference image -->
+              <div class="color-rect red"></div>
+              <div class="color-rect green"></div>
+              <div class="color-rect blue"></div>
+              <div class="color-rect cyan"></div>
+              <div class="color-rect yellow"></div>
+              <div class="color-rect magenta"></div>
+              <div class="color-rect black"></div>
+              <div class="color-rect light-gray"></div>
+              <div class="color-rect gray"></div>
+              <div class="color-rect darker-gray"></div>
+              <div class="color-rect darkest-gray"></div>
+              <div class="color-rect dark-gray"></div>
+              <div class="color-rect black-2"></div>
+              <div class="color-rect light-green"></div>
+              <div class="color-rect dark-green"></div>
+              <div class="color-rect navy"></div>
+              <div class="color-rect royal-blue"></div>
+              <div class="color-rect maroon"></div>
+              <div class="color-rect brown"></div>
+              <div class="color-rect orange"></div>
+            </div>
+          </div>
+          <nav class="main-nav" aria-label="Primary">
+            <a href="../index.html" class="nav-link">Projects</a>
+            <a href="#blog" class="nav-link active">Blog</a>
+            <a href="#about" class="nav-link">About</a>
+          </nav>
+        </header>
+
+        <!-- ─────────────────────  POST  ───────────────────── -->
+        <section class="post">
+            <h1>Retrieval Models</h1>
+            <p><i>1 May 2025</i></p>
+
+            <p>What is a retrieval model? <i>A retrieval model</i> is a mathematical framework that describes how information is retrieved
+                from a collection of documents, providing a way to measure the [topical, user-specific and binary or multi-valued] relevance of a document to a given query. <i>A ranking algorithm</i>
+                then ranks the documents based on their relevance. </p>
+            <h2>Symbolic/Exact-match</h2>
+            <p>
+                <ul>
+                    <li>Boolean retrieval (1960s) - is a simple model that retrieves documents that contain all terms of the query.
+                        As you can imagine, this model doesn't differentiate between retrieved documents (they are all assumed to be relevant) and
+                        has no notion of ranking. It also puts search-efficiency burden on the user since simple queries don't work well.</li>
+                </ul>
+            </p>
+
+            <h2>Algebraic weighting</h2>
+            <p>
+                <ul>
+                    <li>
+                        <p>
+                            Vector space (1960s-1970s)
+                            - simply put, this model assumes that documents and queries are points in a high-dimensional space.
+                            In this context, a distance between document-and-query points can be taken as a measure of relevance. More commonly though, some sort of
+                            similarity measure is used. The most successful of these is the <i>cosine correlation</i> similarity measure,
+                            which is defined as the cosine of the angle between the document and query vectors.
+                        </p>
+                        <p>
+                            Note that this model assumes a continuous relevance score. Because of this, term weighting is an important factor and is usually
+                            taken into account by using variations of <i>tf/idf weighting</i>. </li>
+                        </p>
+                </ul>
+            </p>
+
+            <h2>Probabilistic Models</h2>
+            <p>
+                <ul>
+                    <li>Binary-Independence (1970s-1980s)</li>
+                    <li>BM25 family (1990s)</li>
+                </ul>
+            </p>
+
+            <h2>Language-Model (LM) based</h2>
+            <p>
+                <ul>
+                    <li>Query-likelihood with Dirichlet or Jelinek-Mercer smoothing (2000s)</li>
+                    <li>RM3 pseudo-relevance feedback</li>
+                </ul>
+            </p>
+
+            <h2>Learned-to-Rank (feature-based GBDT, LambdaMART)  (2007-2015)</h2>
+            <p> </p>
+
+            <h2>Neural IR (deep learning era)</h2>
+            <p>
+                <ul>
+                    <li>Dual/Bi-Encoder dense retrieval (DPR, Contriever, etc.)</li>
+                    <li>Late-interaction (ColBERT, ColBERT-v2)</li>
+                    <li>Sparse-expansion (DeepCT, **SPLADE**)</li>
+                    <li>Cross-encoders (BERT re-rankers)</li>
+                    <li>Hybrid fusion (dense + BM25, dense + SPLADE)</li>
+                </ul>
+            </p>
+
+            <h2>Generative & Large-LM-centric</h2>
+            <p>
+                <ul>
+                    <li>Retrieval-Augmented Generation (**RAG**) – encoder+generator loop</li>
+                    <li>Generative-retrieval (seq2seq decodes DocIDs; GRT, RIPOR, TIGER)</li>
+                    <li>HyDE/synthetic-query index enrichment</li>
+                </ul>
+            </p>
+
+            <h2>Summary</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Time Period</th>
+                  <th>Development</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1960s-70s</strong></td>
+                  <td>Symbolic Boolean → users had to know query logic; recall-oriented.</td>
+                </tr>
+                <tr>
+                  <td><strong>1975–1990s</strong></td>
+                  <td>Vector-space & tf-idf made ranking automatic, enabling early commercial engines (e.g., SMART).</td>
+                </tr>
+                <tr>
+                  <td><strong>1994–2005</strong></td>
+                  <td>Probabilistic BM25 tuned term saturation & doc-length bias; became the web-search work-horse.</td>
+                </tr>
+                <tr>
+                  <td><strong>2000-2010</strong></td>
+                  <td>LM approaches tightened probabilistic grounding; fueled research but limited industry uptake (complexity, smoothing).</td>
+                </tr>
+                <tr>
+                  <td><strong>2015-2020</strong></td>
+                  <td>Word-embedding era; neural dual encoders hit production in QA (DPR 2020).</td>
+                </tr>
+                <tr>
+                  <td><strong>2020-2023</strong></td>
+                  <td>Late-interaction & sparse-expansion bridged efficiency/effectiveness gap; Lucene-ANN & ColBERT-v2 show commodity-hardware viability.</td>
+                </tr>
+                <tr>
+                  <td><strong>2023-2024</strong></td>
+                  <td>Vector-DB boom + corporate RAG adoption (Microsoft, Google, Cohere) mainstream dense retrieval in business apps.</td>
+                </tr>
+                <tr>
+                  <td><strong>2024-2025+</strong></td>
+                  <td>Generative retrieval prototypes demonstrate small-collection wins but face update & scaling hurdles; research racing to 100 M+-doc benchmarks.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h2>References</h2>
+            <div class="citation">
+              <p id="ref1"><sup>1</sup> <a href="http://ilpubs.stanford.edu:8090/422/1/1999-66.pdf" target="_blank">The PageRank Citation Ranking: Bringing Order to the Web</a>, Stanford University, 1999.</p>
+            </div>
+        </section>
+        <!-- ────────────────────  FOOTER ICONS  ──────────────────── -->
+        <footer class="icon-footer">
+            <nav class="icon-nav">
+            <a href="https://github.com/adamsoliev" target="_blank" title="GitHub" class="icon-link"><img src="../assets/logos/github.png" alt="GitHub" /></a>
+            <a href="https://x.com/adamsoliev" target="_blank" title="X/Twitter" class="icon-link"><img src="../assets/logos/twitter.png" alt="X" /></a>
+            <a href="mailto:adamsoliev.se@gmail.com" title="Email" class="icon-link"><img src="../assets/logos/email.png" alt="Email" /></a>
+            </nav>
+        </footer>
+    </div>
+    </body>
+  </html>
