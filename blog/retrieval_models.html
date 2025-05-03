@@ -127,41 +127,43 @@
                         </math>
 
                         <!-- Explanations -->
-                        <p class="where-heading">where:</p>
-                        <table class="where-table">
-                          <tr>
-                            <td class="symbol"><math><msub><mi>D</mi><mi>i</mi></msub></math></td>
-                            <td>vector of term-weights for document <var>i</var></td>
-                          </tr>
+                        <details class="where-details">
+                          <summary>where:</summary>
+                            <table class="where-table">
+                            <tr>
+                                <td class="symbol"><math><msub><mi>D</mi><mi>i</mi></msub></math></td>
+                                <td>vector of term-weights for document <var>i</var></td>
+                            </tr>
 
-                          <tr>
-                            <td class="symbol"><math><mi>Q</mi></math></td>
-                            <td>vector of term-weights for the query</td>
-                          </tr>
+                            <tr>
+                                <td class="symbol"><math><mi>Q</mi></math></td>
+                                <td>vector of term-weights for the query</td>
+                            </tr>
 
-                          <tr>
-                            <td class="symbol"><math><msub><mi>d</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math></td>
-                            <td>weight of term&nbsp;<var>j</var> in document&nbsp;<var>i</var></td>
-                          </tr>
+                            <tr>
+                                <td class="symbol"><math><msub><mi>d</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math></td>
+                                <td>weight of term&nbsp;<var>j</var> in document&nbsp;<var>i</var></td>
+                            </tr>
 
-                          <tr>
-                            <td class="symbol"><math><msub><mi>q</mi><mi>j</mi></msub></math></td>
-                            <td>weight of term&nbsp;<var>j</var> in the query</td>
-                          </tr>
+                            <tr>
+                                <td class="symbol"><math><msub><mi>q</mi><mi>j</mi></msub></math></td>
+                                <td>weight of term&nbsp;<var>j</var> in the query</td>
+                            </tr>
 
-                          <tr>
-                            <td class="symbol"><math><mi>t</mi></math></td>
-                            <td>number of distinct terms (vector dimensionality)</td>
-                          </tr>
-                          <tr>
-                            <td class="symbol">numerator</td>
-                            <td>dot product of D and Q vectors</td>
-                          </tr>
-                          <tr>
-                            <td class="symbol">denominator</td>
-                            <td>product of Euclidean lengths of D and Q vectors</td>
-                          </tr>
-                        </table>
+                            <tr>
+                                <td class="symbol"><math><mi>t</mi></math></td>
+                                <td>number of distinct terms (vector dimensionality)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol">numerator</td>
+                                <td>dot product of D and Q vectors</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol">denominator</td>
+                                <td>product of Euclidean lengths of D and Q vectors</td>
+                            </tr>
+                            </table>
+                        </details>
 
                         <p>
                             Note from the formula that this model does take into account term weights and the number of matching terms, which
@@ -187,7 +189,7 @@
                                 <mo>></mo>
                                 <mi>P</mi><mo>(</mo><mi>NR</mi><mo>|</mo><mi>D</mi><mo>)</mo>
                             </math>.
-                            Applying Bayes' rule to each side and removing cancelled <math><mi>P</mi><mo>(</mo><mi>D</mi><mo>)</mo></math>, we get:
+                            Applying Bayes' rule to each side and removing cancelled <math><mi>P</mi><mo>(</mo><mi>D</mi><mo>)</mo></math>, you get:
                         </p>
                         <math display="block">
                             <mrow>
@@ -212,17 +214,19 @@
                         </math>
 
                         <!-- Explanations -->
-                        <p class="where-heading">where:</p>
-                        <table class="where-table">
-                          <tr>
-                            <td class="symbol">leftside</td>
-                            <td>likelihood ratio</td>
-                          </tr>
-                        </table>
+                        <details class="where-details">
+                          <summary>where:</summary>
+                            <table class="where-table">
+                            <tr>
+                                <td class="symbol">leftside</td>
+                                <td>likelihood ratio</td>
+                            </tr>
+                            </table>
+                        </details>
 
                         <p>
                             The likelihood ratio tells us how likely a document belongs to the relevant set and hence can be used to rank documents.
-                            Keeping the aforementioned assumptions (binary and independence) in mind, we can estimate
+                            Keeping the aforementioned assumptions (binary and independence) in mind, you can estimate
                             <math><mi>P</mi><mo>(</mo><mi>D</mi><mo>|</mo><mi>R</mi><mo>)</mo> </math>  by the product
                             of the individual term probabilities
                             <math>
@@ -280,32 +284,34 @@
                         </math>
 
                         <!-- Explanations -->
-                        <p class="where-heading">where:</p>
-                        <table class="where-table">
-                          <tr>
-                            <td class="symbol"><math><msub><mi>p</mi><mi>i</mi></msub></math></td>
-                            <td>prob. term <var>i</var> occurs in a document from the rel. set</td>
-                          </tr>
-                          <tr>
-                            <td class="symbol"><math><msub><mi>s</mi><mi>i</mi></msub></math></td>
-                            <td>prob. term <var>i</var> occurs in a document from the non-rel. set</td>
-                          </tr>
-                          <tr>
-                            <td class="symbol"><math><msub><mi>d</mi><mi>i</mi></msub></math></td>
-                            <td>binary indicator (1 or 0)</td>
-                          </tr>
-                          <tr>
-                            <td class="symbol">first product</td>
-                            <td>contribution from terms present in the document</td>
-                          </tr>
-                          <tr>
-                            <td class="symbol">second product</td>
-                            <td>contribution from terms absent from the document</td>
-                          </tr>
-                        </table>
+                        <details class="where-details">
+                          <summary>where:</summary>
+                            <table class="where-table">
+                            <tr>
+                                <td class="symbol"><math><msub><mi>p</mi><mi>i</mi></msub></math></td>
+                                <td>prob. term <var>i</var> occurs in a document from the rel. set</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><msub><mi>s</mi><mi>i</mi></msub></math></td>
+                                <td>prob. term <var>i</var> occurs in a document from the non-rel. set</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><msub><mi>d</mi><mi>i</mi></msub></math></td>
+                                <td>binary indicator (1 or 0)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol">first product</td>
+                                <td>contribution from terms present in the document</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol">second product</td>
+                                <td>contribution from terms absent from the document</td>
+                            </tr>
+                            </table>
+                        </details>
 
                         <p>
-                            With a bit of math manipulation, we can rewrite it as:
+                            With a bit of math manipulation, you can rewrite it as:
                         </p>
                         <math display="block">
                           <mrow>
@@ -353,8 +359,8 @@
                         </math>
 
                         <p>
-                            The product on the right is identical for every document, so we drop it. To avoid problems with small numbers
-                            causing accuracy issues, we use the logarithm, which converts the product to a sum:
+                            The product on the right is identical for every document, so you drop it. To avoid accuracy problems caused by
+                            working with small numbers, you use the logarithm (which converts the product to a sum):
                         </p>
                         <math display="block">
                           <mrow>
@@ -456,7 +462,133 @@
                         </p>
 
                     </li>
-                    <li>BM25 family (1990s)</li>
+                    <li>
+                        <p>
+                            BM25 family (1990s) - a logical extension of BIM where term frequency and document length are taken into account, in addition to IDF.
+                        </p>
+                        <math display="block">
+                          <mrow>
+                            <mi>BM25</mi><mo>(</mo><mi>d</mi><mo>,</mo><mi>q</mi><mo>)</mo>
+                            <mo>=</mo>
+                            <munder>
+                              <mo>&#x2211;</mo>
+                              <mrow>
+                                <msub><mi>t</mi><mi>i</mi></msub>
+                                <mo>&#x2208;</mo>
+                                <mi>q</mi>
+                              </mrow>
+                            </munder>
+                            <mrow>
+                              <mi>log</mi>
+                              <mo>(</mo>
+                              <!-- IDF term -->
+                              <mfrac>
+                                <mrow>
+                                  <mi>N</mi><mo>&#x2212;</mo><msub><mi>n</mi><mi>i</mi></msub><mo>+</mo><mn>0.5</mn>
+                                </mrow>
+                                <mrow>
+                                  <msub><mi>n</mi><mi>i</mi></msub><mo>+</mo><mn>0.5</mn>
+                                </mrow>
+                              </mfrac>
+                              <mo>&#x22C5;</mo>
+                              <!-- document‐side TF/length normalization -->
+                              <mfrac>
+                                <mrow>
+                                  <mo>(</mo><mi>k</mi><mn>1</mn><mo>+</mo><mn>1</mn><mo>)</mo>
+                                  <msub><mi>f</mi><mrow><mi>i</mi><mo>,</mo><mi>d</mi></mrow></msub>
+                                </mrow>
+                                <mrow>
+                                  <mi>k</mi><mn>1</mn>
+                                  <mo>(</mo>
+                                    <mn>1</mn><mo>&#x2212;</mo><mi>b</mi><mo>+</mo><mi>b</mi>
+                                    <mfrac>
+                                      <mi>dl</mi><mi>avgdl</mi>
+                                    </mfrac>
+                                  <mo>)</mo>
+                                  <mo>+</mo>
+                                  <msub><mi>f</mi><mrow><mi>i</mi><mo>,</mo><mi>d</mi></mrow></msub>
+                                </mrow>
+                              </mfrac>
+                              <mo>&#x22C5;</mo>
+                              <!-- query‐side TF -->
+                              <mfrac>
+                                <mrow>
+                                  <mo>(</mo><mi>k</mi><mn>3</mn><mo>+</mo><mn>1</mn><mo>)</mo>
+                                  <msub><mi>f</mi><mrow><mi>i</mi><mo>,</mo><mi>q</mi></mrow></msub>
+                                </mrow>
+                                <mrow>
+                                  <mi>k</mi><mn>3</mn><mo>+</mo>
+                                  <msub><mi>f</mi><mrow><mi>i</mi><mo>,</mo><mi>q</mi></mrow></msub>
+                                </mrow>
+                              </mfrac>
+                              <mo>)</mo>
+                            </mrow>
+                          </mrow>
+                        </math>
+
+                        <!-- Explanations -->
+                        <details class="where-details">
+                          <summary>where:</summary>
+                            <table class="where-table">
+                            <tr>
+                                <td class="symbol"><math><mi>d</mi></math></td>
+                                <td>document</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><mi>q</mi></math></td>
+                                <td>query</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><msub><mi>t</mi><mi>i</mi></msub></math></td>
+                                <td>term in the query</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><mi>N</mi></math></td>
+                                <td>total number of documents in the collection</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><msub><mi>n</mi><mi>i</mi></msub></math></td>
+                                <td>number of documents containing term <var>i</var></td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><msub><mi>f</mi><mrow><mi>i</mi><mo>,</mo><mi>d</mi></mrow></msub></math></td>
+                                <td>frequency of term <var>i</var> in document <var>d</var></td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><msub><mi>f</mi><mrow><mi>i</mi><mo>,</mo><mi>q</mi></mrow></msub></math></td>
+                                <td>frequency of term <var>i</var> in query <var>q</var></td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><mi>dl</mi></math></td>
+                                <td>length of document <var>d</var> (in terms)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><mi>avgdl</mi></math></td>
+                                <td>average document length in the collection</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><mi>k</mi><mn>1</mn></math>, <math><mi>b</mi></math></td>
+                                <td>tunable parameters (typically k₁ ∈ [1.2, 2.0], b = 0.75)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><mi>k</mi><mn>3</mn></math></td>
+                                <td>tunable parameter for query term weighting</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol">first exp.</td>
+                                <td>IDF component (inverse document frequency)</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol">second exp.</td>
+                                <td>TF component with document length normalization</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol">third exp.</td>
+                                <td>query term frequency component</td>
+                            </tr>
+                            </table>
+                        </details>
+                    </li>
                 </ul>
             </p>
 

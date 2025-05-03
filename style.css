@@ -343,6 +343,7 @@ math[display="block"] {
     text-align: left;
 }
 
+/* TODO: remove once all converted to collabsable using native details/summary */
 .where-heading {
     font-weight: bold;
     margin: 0.8em 0 0.4em 2em;
@@ -410,4 +411,74 @@ math {
     .table td:first-child {
         width: auto;
     }
+}
+
+details.where-details {
+    margin: 1.2em 0 1.2em 2em;
+    position: relative;
+}
+
+details.where-details summary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 80px;
+    height: var(--btn-h);
+    padding: 0 12px;
+    background: var(--btn-yellow);
+    color: #111;
+    border: 1px solid #111;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.25);
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    margin: 0 0 10px 0;
+    transition:
+        transform 0.05s ease-out,
+        box-shadow 0.05s ease-out,
+        background 0.05s ease-out,
+        color 0.05s ease-out;
+    list-style: none;
+    text-align: center;
+}
+
+details.where-details summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Add an arrow indicator that changes on open/close */
+/* details.where-details summary::after {
+    content: " ↓";
+    font-size: 0.9em;
+    margin-left: 4px;
+} */
+
+/* details.where-details[open] summary::after {
+    content: " ↑";
+} */
+
+/* Hover effects to match the More buttons */
+details.where-details summary:hover,
+details.where-details summary:focus-visible {
+    background: var(--btn-yellow-hover);
+    color: #fff;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+    outline: none;
+}
+
+/* Remove previous triangle styling */
+details.where-details summary::before {
+    content: none;
+}
+
+/* Add spacing below the table */
+details.where-details .where-table {
+    margin-bottom: 1em;
+}
+
+/* Animation for opening/closing */
+details.where-details[open] summary {
+    margin-bottom: 1em;
 }
