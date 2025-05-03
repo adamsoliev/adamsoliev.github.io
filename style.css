@@ -343,13 +343,6 @@ math[display="block"] {
     text-align: left;
 }
 
-/* TODO: remove once all converted to collabsable using native details/summary */
-.where-heading {
-    font-weight: bold;
-    margin: 0.8em 0 0.4em 2em;
-    font-size: var(--font-size);
-}
-
 .where-table {
     border-collapse: collapse;
     margin: 0 0 1.2em 2em;
@@ -448,15 +441,15 @@ details.where-details summary::-webkit-details-marker {
 }
 
 /* Add an arrow indicator that changes on open/close */
-/* details.where-details summary::after {
+details.where-details summary::after {
     content: " ↓";
     font-size: 0.9em;
     margin-left: 4px;
-} */
+}
 
-/* details.where-details[open] summary::after {
+details.where-details[open] summary::after {
     content: " ↑";
-} */
+}
 
 /* Hover effects to match the More buttons */
 details.where-details summary:hover,

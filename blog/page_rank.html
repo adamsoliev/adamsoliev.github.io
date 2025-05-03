@@ -114,36 +114,38 @@
                 </math>
 
                 <!-- Explanations -->
-                <p class="where-heading">where:</p>
-                <table class="where-table">
-                  <tr><td class="symbol"><math><mi>&#x03BB;</mi></math></td>
-                      <td>probability of jumping to a random page (e.g.&nbsp;0.15)</td></tr>
+                <details class="where-details">
+                <summary>where:</summary>
+                    <table class="where-table">
+                    <tr><td class="symbol"><math><mi>&#x03BB;</mi></math></td>
+                        <td>probability of jumping to a random page (e.g.&nbsp;0.15)</td></tr>
 
-                  <tr><td class="symbol"><math><mi>N</mi></math></td>
-                      <td>total number of pages</td></tr>
+                    <tr><td class="symbol"><math><mi>N</mi></math></td>
+                        <td>total number of pages</td></tr>
 
-                  <tr><td class="symbol"><math><mn>1</mn><mo>&#x2212;</mo><mi>&#x03BB;</mi></math></td>
-                      <td>probability of following an out-link</td></tr>
+                    <tr><td class="symbol"><math><mn>1</mn><mo>&#x2212;</mo><mi>&#x03BB;</mi></math></td>
+                        <td>probability of following an out-link</td></tr>
 
-                  <tr><td class="symbol">
-                        <math>
-                          <munderover>
-                            <mo>&Sum;</mo>
-                            <mrow>
-                              <mi>v</mi><mo>&#x2208;</mo><msub><mi>B</mi><mi>u</mi></msub>
-                            </mrow>
-                            <none/>
-                          </munderover>
-                        </math>
-                      </td>
-                      <td>sum over all pages <i>v</i> that link to page <i>u</i> (set <math><msub><mi>B</mi><mi>u</mi></msub></math>)</td></tr>
+                    <tr><td class="symbol">
+                            <math>
+                            <munderover>
+                                <mo>&Sum;</mo>
+                                <mrow>
+                                <mi>v</mi><mo>&#x2208;</mo><msub><mi>B</mi><mi>u</mi></msub>
+                                </mrow>
+                                <none/>
+                            </munderover>
+                            </math>
+                        </td>
+                        <td>sum over all pages <i>v</i> that link to page <i>u</i> (set <math><msub><mi>B</mi><mi>u</mi></msub></math>)</td></tr>
 
-                  <tr><td class="symbol"><math><mi>PR</mi><mo>(</mo><mi>v</mi><mo>)</mo></math></td>
-                      <td>current PageRank of page&nbsp;<i>v</i></td></tr>
+                    <tr><td class="symbol"><math><mi>PR</mi><mo>(</mo><mi>v</mi><mo>)</mo></math></td>
+                        <td>current PageRank of page&nbsp;<i>v</i></td></tr>
 
-                  <tr><td class="symbol"><math><msub><mi>L</mi><mi>v</mi></msub></math></td>
-                      <td>number of out-links from page&nbsp;<i>v</i></td></tr>
-                </table>
+                    <tr><td class="symbol"><math><msub><mi>L</mi><mi>v</mi></msub></math></td>
+                        <td>number of out-links from page&nbsp;<i>v</i></td></tr>
+                    </table>
+                </details>
             </p>
             <p>
                 Putting the first term aside for the moment, the above two ideas (in-link count and the importance of linking page) directly map to the second term.
@@ -176,17 +178,19 @@
                 </math>
 
                 <!-- Explanations -->
-                <p class="where-heading">where:</p>
-                <table class="where-table">
-                  <tr><td class="symbol"><math><msub><mi>R</mi><mi>k + 1</mi></msub></math></td>
-                      <td>new ranks</td></tr>
+                <details class="where-details">
+                <summary>where:</summary>
+                    <table class="where-table">
+                    <tr><td class="symbol"><math><msub><mi>R</mi><mi>k + 1</mi></msub></math></td>
+                        <td>new ranks</td></tr>
 
-                  <tr><td class="symbol"><math><mi>T</mi></math></td>
-                      <td>transition probabilities for random surfer model</td></tr>
+                    <tr><td class="symbol"><math><mi>T</mi></math></td>
+                        <td>transition probabilities for random surfer model</td></tr>
 
-                  <tr><td class="symbol"><math><msub><mi>R</mi><mi>k</mi></msub></math></td>
-                      <td>old ranks</td></tr>
-                </table>
+                    <tr><td class="symbol"><math><msub><mi>R</mi><mi>k</mi></msub></math></td>
+                        <td>old ranks</td></tr>
+                    </table>
+                </details>
             </p>
             <p>
                 You can think of <math><msub><mi>R</mi><mi>k</mi></msub></math> as the vector of page ranks after <i>k</i> iterations.
