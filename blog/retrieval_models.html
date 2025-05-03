@@ -406,7 +406,6 @@
                           (collection frequency). Plugging those into the weight gives:
                         </p>
 
-
                         <math display="block">
                           <mrow>
                             <mo>=</mo>
@@ -588,6 +587,60 @@
                             </tr>
                             </table>
                         </details>
+                        <p>
+                            Query term frequency component is usually ignored with an assumption that real-world queries are short, which means it has
+                            negligible effect on the final ranking.
+                        </p>
+                        <p>
+                            <math>
+                                <mrow>
+                                    <mfrac>
+                                    <mrow>
+                                        <mo>(</mo>
+                                        <msub><mi>k</mi><mn>1</mn></msub>
+                                        <mo>+</mo>
+                                        <mn>1</mn>
+                                        <mo>)</mo>
+                                        <msub>
+                                        <mi>f</mi>
+                                        <mrow><mi>i</mi><mo>,</mo><mi>d</mi></mrow>
+                                        </msub>
+                                    </mrow>
+                                    <mrow>
+                                        <msub><mi>k</mi><mn>1</mn></msub>
+                                        <mo>+</mo>
+                                        <msub>
+                                        <mi>f</mi>
+                                        <mrow><mi>i</mi><mo>,</mo><mi>d</mi></mrow>
+                                        </msub>
+                                    </mrow>
+                                    </mfrac>
+                                </mrow>
+                            </math>
+                            is responsible for term frequency saturation, where <math><mi>k1</mi></math> controls the "knee" of the curve. When you fold
+                            length normalization, you replace <math><mi>k1</mi></math> in that denominator with
+                            <math>
+                              <mrow>
+                                <mi>K</mi>
+                                <mo>=</mo>
+                                <msub><mi>k</mi><mn>1</mn></msub>
+                                <mo>&#x22C5;</mo>
+                                <mrow>
+                                  <mo>(</mo>
+                                  <mn>1</mn><mo>&#x2212;</mo><mi>b</mi>
+                                  <mo>+</mo>
+                                  <mi>b</mi>
+                                  <mo>&#x22C5;</mo>
+                                  <mfrac>
+                                    <mi>dl</mi>
+                                    <mi>avgdl</mi>
+                                  </mfrac>
+                                  <mo>)</mo>
+                                </mrow>
+                              </mrow>
+                            </math>, so long documents (large <math><mi>dl</mi></math>) get a bigger pseudo‑count <math><mi>K</mi></math>, which delays saturation,
+                            with <math><mi>b</mi></math> as its knob.
+                        </p>
                     </li>
                 </ul>
             </p>
