@@ -678,6 +678,7 @@
 
             <p>
                 <i>unigram</i> models are simpler and proven to be effective, hence have been used widely as the basis for ranking algorithms.
+                Note throughout this discussion that LMs leverage topical relevance of the text, which is only a part of the answer to affective search.
             </p>
             <ul>
                 <li>
@@ -974,7 +975,12 @@
                       </mrow>
                     </math>
                 </li>
-                <li>RM3 pseudo-relevance feedback</li>
+                <p>
+                    You can turn the query likelihood model upside down and come up with a document likelihood model. In that case, not only is it
+                    more difficult to compute the scores because of greatly varying document lengths, but also there is an issue of obtaining relevant documents.
+                    Instead of these, you can generalize the problem and directly compare the query LM with the document LM, using a measure like
+                    <i>Kullback-Leibler divergence</i>, which measures the difference between two probability distributions.
+                </p>
             </ul>
 
             <h2>Learned-to-Rank (feature-based GBDT, LambdaMART)  (2007-2015)</h2>
