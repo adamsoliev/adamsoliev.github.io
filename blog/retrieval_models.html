@@ -788,9 +788,196 @@
                         in the document LM.
                     </p>
                     <p>
-                        These are solved with <i>smoothing</i>, which lowers probabilities of seen words in the document and assign those
-                        "leftover" probabilities to unseen words.
+                        <i>Smoothing</i> addresses these issues. One common technique is to lowers probability estimates for words in the document by
+                        <math><msub><mi>α</mi><mi>D</mi></msub></math> and assign those
+                        "leftover" probability estimates to words in the collection, which has seen and unseen words in <math><mi>D</mi></math>,
+                        proportionally to the collection probabilities. This results in:
                     </p>
+                    <math display="block">
+                      <mrow>
+                        <msub><mi>P</mi><mi>seen</mi></msub>
+                        <mo>(</mo><msub><mi>q</mi><mi>i</mi></msub><mo>|</mo><mi>D</mi><mo>)</mo>
+                        <mo>=</mo>
+                        <mrow>
+                          <mo>(</mo>
+                            <mn>1</mn><mo>−</mo>
+                            <msub><mi>α</mi><mi>D</mi></msub>
+                          <mo>)</mo>
+                          <mo>&#x22C5;</mo>
+                          <mi>P</mi>
+                          <mo>(</mo><msub><mi>q</mi><mi>i</mi></msub><mo>|</mo><mi>D</mi><mo>)</mo>
+                          <mo>+</mo>
+                          <msub><mi>α</mi><mi>D</mi></msub>
+                          <mo>&#x22C5;</mo>
+                          <mi>P</mi>
+                          <mo>(</mo><msub><mi>q</mi><mi>i</mi></msub><mo>|</mo><mi>C</mi><mo>)</mo>
+                        </mrow>
+                      </mrow>
+                    </math>
+                    <math display="block">
+                      <mrow>
+                        <msub><mi>P</mi><mi>unseen</mi></msub>
+                        <mo>(</mo><msub><mi>q</mi><mi>i</mi></msub><mo>|</mo><mi>D</mi><mo>)</mo>
+                        <mo>=</mo>
+                        <mrow>
+                          <msub><mi>α</mi><mi>D</mi></msub>
+                          <mo>&#x22C5;</mo>
+                          <mi>P</mi>
+                          <mo>(</mo><msub><mi>q</mi><mi>i</mi></msub><mo>|</mo><mi>C</mi><mo>)</mo>
+                        </mrow>
+                      </mrow>
+                    </math>
+                    <p>
+                        Depending on how you specify the value of <math><msub><mi>&alpha;</mi><mi>D</mi></msub></math>, different forms of estimation emerge.
+                        <i>Jelinek-Mercer</i> method assumes it to be constant (e.g., <math><msub><mi>α</mi><mi>D</mi></msub><mo>=</mo><mi>λ</mi></math>), resulting in the following query likelihood model:
+                    </p>
+                    <math display="block">
+                      <mrow>
+                        <mi>P</mi><mo>(</mo><mi>Q</mi><mo>|</mo><mi>D</mi><mo>)</mo>
+                        <mo>=</mo>
+                        <munderover>
+                          <mo>∏</mo>
+                          <mrow>
+                            <mi>i</mi><mo>=</mo><mn>1</mn>
+                          </mrow>
+                          <mi>n</mi>
+                        </munderover>
+                        <mo>(</mo>
+                          <mrow>
+                            <mo>(</mo><mn>1</mn><mo>−</mo><mi>λ</mi><mo>)</mo>
+                            <mfrac>
+                              <mrow>
+                                <msub>
+                                  <mi>f</mi>
+                                  <mrow>
+                                    <msub><mi>q</mi><mi>i</mi></msub><mo>,</mo><mi>D</mi>
+                                  </mrow>
+                                </msub>
+                              </mrow>
+                              <mrow>
+                                <mo>|</mo><mi>D</mi><mo>|</mo>
+                              </mrow>
+                            </mfrac>
+                            <mo>+</mo>
+                            <mi>λ</mi>
+                            <mfrac>
+                              <mrow>
+                                <msub>
+                                  <mi>c</mi>
+                                  <msub><mi>q</mi><mi>i</mi></msub>
+                                </msub>
+                              </mrow>
+                              <mrow>
+                                <mo>|</mo><mi>C</mi><mo>|</mo>
+                              </mrow>
+                            </mfrac>
+                          </mrow>
+                        <mo>)</mo>
+                      </mrow>
+                    </math>
+                    <p>
+                        In its log form, it looks:
+                    </p>
+                    <math display="block">
+                      <mrow>
+                        <mi>log</mi>
+                        <mi>P</mi>
+                        <mo>(</mo><mi>Q</mi><mo>|</mo><mi>D</mi><mo>)</mo>
+                        <mo>=</mo>
+                        <munderover>
+                          <mo>&#x2211;</mo>
+                          <mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow>
+                          <mi>n</mi>
+                        </munderover>
+                        <mrow>
+                          <mi>log</mi>
+                          <mo>(</mo>
+                          <mrow>
+                            <mo>(</mo><mn>1</mn><mo>−</mo><mi>λ</mi><mo>)</mo>
+                            <mfrac>
+                              <mrow>
+                                <msub><mi>f</mi><mrow><msub><mi>q</mi><mi>i</mi></msub><mo>,</mo><mi>D</mi></mrow></msub>
+                              </mrow>
+                              <mrow><mo>|</mo><mi>D</mi><mo>|</mo></mrow>
+                            </mfrac>
+                            <mo>+</mo>
+                            <mi>λ</mi>
+                            <mfrac>
+                              <mrow>
+                                <msub><mi>c</mi><mrow><msub><mi>q</mi><mi>i</mi></msub></mrow></msub>
+                              </mrow>
+                              <mrow><mo>|</mo><mi>C</mi><mo>|</mo></mrow>
+                            </mfrac>
+                          </mrow>
+                          <mo>)</mo>
+                        </mrow>
+                      </mrow>
+                    </math>
+
+                    <p>
+                        <i>Dirichlet</i> ties <math><msub><mi>α</mi><mi>D</mi></msub></math> to document length, which turns out to be a more effective,
+                        using (<math><mi>μ</mi></math> is set empirically):
+                    </p>
+                    <math display="block">
+                      <mrow>
+                        <msub><mi>α</mi><mi>D</mi></msub>
+                        <mo>=</mo>
+                        <mfrac>
+                          <mi>μ</mi>
+                          <mrow>
+                            <mo>|</mo><mi>D</mi><mo>|</mo>
+                            <mo>+</mo>
+                            <mi>μ</mi>
+                          </mrow>
+                        </mfrac>
+                      </mrow>
+                    </math>
+                    <p>The resulting query likelihood model:</p>
+
+                    <math display="block">
+                      <mrow>
+                        <mi>log</mi>
+                        <mi>P</mi>
+                        <mo>(</mo><mi>Q</mi><mo>|</mo><mi>D</mi><mo>)</mo>
+                        <mo>=</mo>
+                        <munderover>
+                          <mo>&#x2211;</mo>
+                          <mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow>
+                          <mi>n</mi>
+                        </munderover>
+                        <mrow>
+                          <mi>log</mi>
+                          <mo>(</mo>
+                          <mfrac>
+                            <mrow>
+                              <msub>
+                                <mi>f</mi>
+                                <mrow>
+                                  <msub><mi>q</mi><mi>i</mi></msub><mo>,</mo><mi>D</mi>
+                                </mrow>
+                              </msub>
+                              <mo>+</mo>
+                              <mi>μ</mi>
+                              <mfrac>
+                                <mrow>
+                                  <msub>
+                                    <mi>c</mi>
+                                    <msub><mi>q</mi><mi>i</mi></msub>
+                                  </msub>
+                                </mrow>
+                                <mrow><mo>|</mo><mi>C</mi><mo>|</mo></mrow>
+                              </mfrac>
+                            </mrow>
+                            <mrow>
+                              <mo>|</mo><mi>D</mi><mo>|</mo><mo>+</mo><mi>μ</mi>
+                            </mrow>
+                          </mfrac>
+                          <mo>)</mo>
+                        </mrow>
+                      </mrow>
+                    </math>
+
+
                 </li>
                 <li>RM3 pseudo-relevance feedback</li>
             </ul>
