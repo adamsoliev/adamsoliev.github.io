@@ -484,6 +484,7 @@
                                 <msub><mi>n</mi><mi>i</mi></msub><mo>+</mo><mn>0.5</mn>
                             </mrow>
                             </mfrac>
+                            <mo>)</mo>
                             <mo>&#x22C5;</mo>
                             <!-- document‐side TF/length normalization -->
                             <mfrac>
@@ -515,7 +516,6 @@
                                 <msub><mi>f</mi><mrow><mi>i</mi><mo>,</mo><mi>q</mi></mrow></msub>
                             </mrow>
                             </mfrac>
-                            <mo>)</mo>
                         </mrow>
                         </mrow>
                     </math>
@@ -736,7 +736,7 @@
                         <table class="where-table">
                         <tr>
                             <td class="symbol"><math><msub><mi>q</mi><mi>i</mi></msub></math></td>
-                            <td>a query word</td>
+                            <td>query word</td>
                         </tr>
                         <tr>
                             <td class="symbol"><math><mi>n</mi></math></td>
@@ -770,11 +770,11 @@
                         <table class="where-table">
                         <tr>
                             <td class="symbol"><math><msub><mi>f</mi> <mrow><msub><mi>q</mi><mi>i</mi></msub><mo>,</mo><mi>D</mi></mrow></msub></math></td>
-                            <td>the number of times the term <math><msub><mi>q</mi><mi>i</mi></msub></math> appears in <math><mi>D</mi></math></td>
+                            <td>number of times the term <math><msub><mi>q</mi><mi>i</mi></msub></math> appears in <math><mi>D</mi></math></td>
                         </tr>
                         <tr>
                             <td class="symbol"><math><mo>|</mo><mi>D</mi><mo>|</mo></math></td>
-                            <td>the number of words in <math><mi>D</mi></math></td>
+                            <td>number of words in <math><mi>D</mi></math></td>
                         </tr>
                         </table>
                     </details>
@@ -983,8 +983,215 @@
                 </p>
             </ul>
 
-            <h2>Learned-to-Rank (feature-based GBDT, LambdaMART)  (2007-2015)</h2>
-            <p> </p>
+            <h2>Learning to Rank (2007-2015)</h2>
+            <ul>
+                <li>
+                    <p>
+                        Ranking SVM - one of the early successes in applying ML to information retrieval. Unlike previous methods,
+                        such as logistic regression, which required extensive and costly data with explicit relevance judgments,
+                        Ranking SVM leveraged easily accessible clickthrough data and focused on developing
+                        an algorithm to learn a ranking function from this data.
+                    </p>
+                    <p>
+                        Clickthrough data can be thought of as triplets
+                        <math><mo>(</mo><mi>q</mi><mi>,</mi><mi>r</mi><mi>,</mi><mi>c</mi><mo>)</mo></math>
+                        consisting of the query <math><mi>q</mi></math>, the ranking of
+                        documents <math><mi>r</mi></math> presented to the user, and the set <math><mi>c</mi></math> of links the user clicked on. From these clicks,
+                        you can infer the relative relevance of documents, e.g., if a user is shown 3 links and they clicked on link 3,
+                        it is safe to assume that they preferred link 3 to link 2 and link 1, which means
+                        <math><msub><mi>d</mi><mi>3</mi></msub><mo>></mo><msub><mi>d</mi><mi>2</mi></msub></math>
+                        and
+                        <math><msub><mi>d</mi><mi>3</mi></msub><mo>></mo><msub><mi>d</mi><mi>1</mi></msub></math>, respectively.
+                    </p>
+                    <p>
+                        Given the above input and the fact that each document is represented as a feature vector
+                        <math><mi>Φ</mi> <mo>(</mo><mi>q</mi><mo>,</mo><msub><mi>d</mi><mi>j</mi></msub><mo>)</mo></math>,
+                        Ranking SVM tries to find a weight vector <math><mover> <mi>w</mi> <mo>→</mo> </mover></math>
+                        so that for as many pairwise preferences
+                        <math><msub><mi>d</mi><mi>i</mi></msub><mo>></mo><msub><mi>d</mi><mi>j</mi></msub></math>
+                        as possible,
+                        <math>
+                          <mrow>
+                            <mover>
+                              <mi>w</mi>
+                              <mo>→</mo>
+                            </mover>
+                            <mo>·</mo>
+                            <mi>Φ</mi>
+                            <mo>(</mo><mi>q</mi><mo>,</mo>
+                              <msub><mi>d</mi><mi>i</mi></msub>
+                            <mo>)</mo>
+                            <mo>&gt;</mo>
+                            <mover>
+                              <mi>w</mi>
+                              <mo>→</mo>
+                            </mover>
+                            <mo>·</mo>
+                            <mi>Φ</mi>
+                            <mo>(</mo><mi>q</mi><mo>,</mo>
+                              <msub><mi>d</mi><mi>j</mi></msub>
+                            <mo>)</mo>
+                          </mrow>
+                        </math>.
+                        Or equally,
+                        <math>
+                          <mrow>
+                            <mover>
+                              <mi>w</mi>
+                              <mo>→</mo>
+                            </mover>
+                            <mo>·</mo>
+                            <mo>(</mo>
+                              <mi>Φ</mi>
+                              <mo>(</mo><mi>q</mi><mo>,</mo><msub><mi>d</mi><mi>i</mi></msub><mo>)</mo>
+                              <mo>−</mo>
+                              <mi>Φ</mi>
+                              <mo>(</mo><mi>q</mi><mo>,</mo><msub><mi>d</mi><mi>j</mi></msub><mo>)</mo>
+                            <mo>)</mo>
+                            <mo>&gt;</mo>
+                            <mn>0</mn>
+                          </mrow>
+                        </math>.
+                        This leads to, in SVM terms, hyperplane being assumed at
+                        <math>
+                            <mrow>
+                                <mover>
+                                <mi>w</mi>
+                                <mo>→</mo>
+                                </mover>
+                                <mo>·</mo>
+                                <mover>
+                                <mi>x</mi>
+                                <mo>→</mo>
+                                </mover>
+                                <mo>=</mo>
+                                <mn>0</mn>
+                            </mrow>
+                        </math>
+                        and each preference
+                        (<math><msub><mi>d</mi><mi>i</mi></msub><mo>></mo><msub><mi>d</mi><mi>j</mi></msub></math>)
+                        having margin of at least +1 (indicating <math><msub><mi>d</mi><mi>i</mi></msub></math> should be
+                        ranked higher than <math><msub><mi>d</mi><mi>j</mi></msub></math>) away from the hyperplane.
+                        Another way of saying the above goal is to maximize this margin, so that we can match the clickthrough
+                        ranking as closely as possible.
+                    </p>
+                    <p>
+                        From the distance formula for two parallel hyperplanes
+                        <math display="block">
+                          <mrow>
+                            <mo>=</mo>
+                            <mfrac>
+                              <mrow>
+                                <mo>|</mo>
+                                <msub><mi>c</mi><mn>2</mn></msub>
+                                <mo>−</mo>
+                                <msub><mi>c</mi><mn>1</mn></msub>
+                                <mo>|</mo>
+                              </mrow>
+                              <mrow>
+                                <mo>∥</mo>
+                                <mover><mi>w</mi><mo>→</mo></mover>
+                                <mo>∥</mo>
+                              </mrow>
+                            </mfrac>
+                            <mo>=</mo>
+                            <mfrac>
+                              <mrow>
+                                <mn>1</mn>
+                                <mo>−</mo>
+                                <mn>0</mn>
+                              </mrow>
+                              <mrow>
+                                <mo>∥</mo>
+                                <mover><mi>w</mi><mo>→</mo></mover>
+                                <mo>∥</mo>
+                              </mrow>
+                            </mfrac>
+                          </mrow>
+                        </math>
+                        <details class="where-details">
+                            <summary>where:</summary>
+                            <table class="where-table">
+                            <tr>
+                                <td class="symbol"><math><msub><mi>c</mi><mn>i</mn></msub></math></td>
+                                <td>bias terms, or e.g.,
+                                    <math>
+                                        <mrow>
+                                            <mover>
+                                            <mi>w</mi>
+                                            <mo>→</mo>
+                                            </mover>
+                                            <mo>·</mo>
+                                            <mover>
+                                            <mi>x</mi>
+                                            <mo>→</mo>
+                                            </mover>
+                                            <mo>=</mo>
+                                            <msub><mi>c</mi><mn>1</mn></msub>
+                                        </mrow>
+                                    </math>
+                                </td>
+                            </tr>
+                            </table>
+                        </details>
+                        you can see that maximizing margin is the same as minimizing <math><mover> <mi>w</mi> <mo>→</mo></mover></math>.
+                        In other words, you can reformulate this problem as a standard SVM optimization as follows:
+                        <math display="block">
+                          <mrow>
+                            <mtext>minimize:</mtext>
+                            <mspace width="0.5em"/>
+                            <mfrac>
+                              <mn>1</mn>
+                              <mn>2</mn>
+                            </mfrac>
+                            <mspace width="0.5em"/>
+                            <mover>
+                              <mi>w</mi>
+                              <mo>→</mo>
+                            </mover>
+                            <mo>·</mo>
+                            <mover>
+                              <mi>w</mi>
+                              <mo>→</mo>
+                            </mover>
+                            <mo>+</mo>
+                            <mi>C</mi>
+                            <munder>
+                              <mo>∑</mo>
+                              <mrow>
+                                <mi>i</mi><mo>,</mo><mi>j</mi><mo>,</mo><mi>k</mi>
+                              </mrow>
+                            </munder>
+                            <msub>
+                              <mi>ξ</mi>
+                              <mrow>
+                                <mi>i</mi><mo>,</mo><mi>j</mi><mo>,</mo><mi>k</mi>
+                              </mrow>
+                            </msub>
+                          </mrow>
+                        </math>
+                        <details class="where-details">
+                            <summary>where:</summary>
+                            <table class="where-table">
+                            <tr>
+                                <td class="symbol"><math><mi>ξ</mi></math></td>
+                                <td><i>slack variable</i>, accomodates errors in training examples</td>
+                            </tr>
+                            <tr>
+                                <td class="symbol"><math><mi>C</mi></math></td>
+                                <td>parameter that is used to prevent overfitting</td>
+                            </tr>
+                            </table>
+                        </details>
+                    </p>
+                    <p>
+                        Note that a hyperplane is a decision boundary that separates data points into different sets; it's a line in
+                        2D, a plane in 3D, and so on for higher dimensions.
+                    </p>
+                </li>
+                <li>RankNet</li>
+                <li>LambdaRank and LambdaMART</li>
+            </ul>
 
             <h2>Neural IR (deep learning era)</h2>
             <ul>
