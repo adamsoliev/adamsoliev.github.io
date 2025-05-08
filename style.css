@@ -335,6 +335,36 @@ section {
     }
 }
 
+/* ─────────────────────────  BLOG  ───────────────────────── */
+.blog-posts-list {
+    list-style: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 0; /* Reset default ul margins */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between blog post items, similar to project list but potentially smaller */
+}
+
+/* .blog-post-item {} */ /* Individual list items do not need specific styling if <li> defaults are fine */
+
+.blog-post-item a {
+    color: #111; /* Match common text color on the page */
+    text-decoration: none; /* Remove underline by default */
+    font-weight: 500; /* Make blog titles slightly bolder, similar to project-title */
+}
+
+.blog-post-item a:hover,
+.blog-post-item a:focus-visible {
+    text-decoration: underline; /* Add underline on hover/focus for accessibility */
+    color: #1e88e5; /* Use a blue from the theme for hover (matches .color-rect.blue) */
+}
+
+.blog-post-date {
+    font-size: 0.9em; /* Make date text slightly smaller */
+    color: #757575; /* Use a muted gray for the date (matches .color-rect.darker-gray) */
+    /* font-family: "IBM Plex Mono", monospace; /* Inherited from body */
+}
+
 /* ─────────────────────────  MATH  ───────────────────────── */
 math[display="block"] {
     display: block;
