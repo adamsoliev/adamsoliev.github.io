@@ -1189,11 +1189,77 @@
                         2D, a plane in 3D, and so on for higher dimensions.
                     </p>
                 </li>
-                <li>RankNet</li>
-                <li>LambdaRank and LambdaMART</li>
+                <li>
+                    <p>
+                        RankNet (2005) - is a pairwise learning to rank algorithm that typically uses a neural network to
+                        model the underlying ranking function. Instead of directly assigning a relevance score to
+                        a single document, RankNet focuses on the relative order of pairs of documents.
+                    </p>
+                    <p>
+                        For a given query, it takes a pair of documents, say <math><msub><mi>D</mi><mi>i</mi></msub></math> and <math><msub><mi>D</mi><mi>j</mi></msub></math>, with known relevance
+                        labels (e.g., <math><msub><mi>D</mi><mi>i</mi></msub></math> is more relevant than <math><msub><mi>D</mi><mi>j</mi></msub></math>). Each document is represented by a feature
+                        vector. These feature vectors are passed through the scoring function <math><mi>s</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>D</mi><mo>)</mo></math> (often
+                        a neural network) to obtain scores <math><msub><mi>s</mi><mi>i</mi></msub><mo>=</mo><mi>f</mi><mo>(</mo><msub><mi>D</mi><mi>i</mi></msub><mo>)</mo></math> and <math><msub><mi>s</mi><mi>j</mi></msub><mo>=</mo><mi>f</mi><mo>(</mo><msub><mi>D</mi><mi>j</mi></msub><mo>)</mo></math>.
+                    </p>
+                    <p>
+                        RankNet then models the probability that <math><msub><mi>D</mi><mi>i</mi></msub></math> should be ranked higher than <math><msub><mi>D</mi><mi>j</mi></msub></math> using a
+                        logistic function (sigmoid) of the difference in their scores:
+                    </p>
+                    <math display="block">
+                        <mrow>
+                            <msub><mi>P</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub>
+                            <mo>=</mo>
+                            <mi>P</mi><mo>(</mo><msub><mi>D</mi><mi>i</mi></msub><mo>&#x227B;</mo><msub><mi>D</mi><mi>j</mi></msub><mo>)</mo>
+                            <mo>=</mo>
+                            <mfrac>
+                                <mn>1</mn>
+                                <mrow>
+                                    <mn>1</mn>
+                                    <mo>+</mo>
+                                    <msup><mi>e</mi><mrow><mo>−</mo><mi>σ</mi><mo>(</mo><msub><mi>s</mi><mi>i</mi></msub><mo>−</mo><msub><mi>s</mi><mi>j</mi></msub><mo>)</mo></mrow></msup>
+                                </mrow>
+                            </mfrac>
+                        </mrow>
+                    </math>
+                    <details class="where-details">
+                        <summary>where:</summary>
+                        <table class="where-table">
+                        <tr>
+                            <td class="symbol"><math><mi>σ</mi></math></td>
+                            <td>parameter that controls the steepness of the sigmoid</td>
+                        </tr>
+                        </table>
+                    </details>
+                    <p>
+                        The cost function used for training is typically the cross-entropy loss between the
+                        predicted probabilities <math><msub><mi>P</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> and the target probabilities <math><msub><mover><mi>P</mi><mo stretchy="true">¯</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub></math>
+                        (which are 1 if <math><msub><mi>D</mi><mi>i</mi></msub></math> is truly more
+                        relevant than <math><msub><mi>D</mi><mi>j</mi></msub></math>, and 0 otherwise for that pair). For a single pair where <math><msub><mi>D</mi><mi>i</mi></msub></math> is more
+                        relevant than <math><msub><mi>D</mi><mi>j</mi></msub></math> (i.e., <math><msub><mover><mi>P</mi><mo stretchy="true">¯</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>1</mn></math>), the cost <math><mi>C</mi></math> simplifies to:
+                    </p>
+                    <math display="block">
+                        <mrow>
+                            <mi>C</mi>
+                            <mo>=</mo>
+                            <mo>−</mo><msub><mover><mi>P</mi><mo stretchy="true">¯</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><mi>log</mi><msub><mi>P</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub>
+                            <mo>−</mo>
+                            <mo>(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>P</mi><mo stretchy="true">¯</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>)</mo>
+                            <mi>log</mi><mo>(</mo><mn>1</mn><mo>−</mo><msub><mi>P</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>)</mo>
+                            <mo>=</mo>
+                            <mo>−</mo><mi>log</mi><msub><mi>P</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub>
+                        </mrow>
+                    </math>
+                    <p>
+                        The model's parameters (e.g., weights of the neural network) are updated using gradient
+                        descent to minimize this total cost over all training pairs. The core idea is to adjust the
+                        scores <math><msub><mi>s</mi><mi>i</mi></msub></math> such that the predicted probabilities align better with the actual pairwise
+                        preferences.
+                    </p>
+                </li>
+                <!-- <li>LambdaRank and LambdaMART</li> -->
             </ul>
 
-            <h2>Neural IR (deep learning era)</h2>
+            <!-- <h2>Neural IR (deep learning era)</h2>
             <ul>
                 <li>Dual/Bi-Encoder dense retrieval (DPR, Contriever, etc.)</li>
                 <li>Late-interaction (ColBERT, ColBERT-v2)</li>
@@ -1207,7 +1273,7 @@
                 <li>Retrieval-Augmented Generation (**RAG**) – encoder+generator loop</li>
                 <li>Generative-retrieval (seq2seq decodes DocIDs; GRT, RIPOR, TIGER)</li>
                 <li>HyDE/synthetic-query index enrichment</li>
-            </ul>
+            </ul> -->
 
             <h2>Summary</h2>
             <table class="table">
