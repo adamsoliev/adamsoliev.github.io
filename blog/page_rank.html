@@ -1,10 +1,9 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adam Soliev – Portfolio</title>
+    <title>Adam Soliev - Portfolio</title>
     <!-- Typeface -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css" />
@@ -63,19 +62,13 @@
             <h1>PageRank</h1>
             <p><i>28 Apr 2025</i></p>
             <p>
-                Imagine the early web. You type <i>ebay</i> into a hypotherical search engine hoping to reach <i>www.ebay.com</i>, but the results
-                are a list of unrelated pages that merely mention the word. A simple term-matching algorithm of the search engine couldn't separate
-                the real site from the noise. You think, hmm. Is there a way to rank pages based on their relative importance and use that alongside
-                the term matching?
+                Picture 1998. You type <i>ebay</i> into a <i>hypothetical</i> early search engine and expect <i>www.ebay.com</i>. Instead you get a grab‑bag of pages that merely mention the word. Plain keyword matching can’t tell which page actually matters. How can we rank pages by importance, not just by shared words?
             </p>
             <p>
-                Your first idea is to use the web's hyperlink structure. Specifically, you think of using count of in-links (links pointing to a page)
-                but quickly realize that although it is helpful, it is easy to game with a simple program that creates huge number of pages,
-                artifically inflating your counts. In fact, you conclude that any easily controllable on-page factor is prone to manipulation.
+                One idea is to look at hyperlinks: simply count how many pages point to a given page. Helpful, but fragile. A spammer can script thousands of throw‑away pages to inflate that count. In short, any signal you can manufacture yourself is too easy to game.
             </p>
             <p>
-                Your next idea is to improve the in-link count by weighting the importance of the linking page.
-                In other words, "a page has high rank if the sum of the ranks of its backlinks is high"<sup><a href="#ref1">1</a></sup>.
+                A smarter twist is to weight each incoming link by how authoritative the linking page is. Put simply, “a page is important if other important pages link to it.”<sup><a href="#ref1">1</a></sup>
             </p>
             <p>
                 The above intuition can be formalized as follows:
@@ -193,35 +186,7 @@
                 </details>
             </p>
             <p>
-                You can think of <math><msub><mi>R</mi><mi>k</mi></msub></math> as the vector of page ranks after <i>k</i> iterations.
-                (<math><msub><mi>R</mi><mi>0</mi></msub></math> usually starts uniform, e.g., 1/N).
-                In each iteration, you update the ranks using the transition probabilities matrix <math><mi>T</mi></math>,
-                where <math><msub><mi>T</mi><mi>ij</mi></msub></math> represents the probability of going from page <math><msub><mi>i</mi></msub></math> to page
-                <math><msub><mi>j</mi></msub></math> and is equal to:
-                <math display="block">
-                <mrow>
-                    <!-- T(ij) -->
-                    <msub><mi>T</mi><mi>ij</mi></msub>
-                    <mo>=</mo>
-
-                    <!-- λ / N -->
-                    <mfrac><mi>&#x03BB;</mi><mi>N</mi></mfrac>
-                    <mo>+</mo>
-
-                    <!-- (1 − λ)  (use U+2212) -->
-                    <mo>(</mo><mn>1</mn><mo>&#x2212;</mo><mi>&#x03BB;</mi><mo>)</mo>
-                    <mo>&#x2062;</mo><!-- invisible multiplication -->
-
-                    <!--  1 / L_v  -->
-                    <mfrac>
-                    <mrow><mi>1</mi></mrow>
-                    <msub><mi>L</mi><mi>v</mi></msub>
-                    </mfrac>
-                </mrow>
-                </math>
-            </p>
-            <p>
-                You reach a stationary distribution when <math><msub><mi>R</mi><mi>k + 1</mi></msub></math><mo>=</mo><math><msub><mi>R</mi><mi>k</mi></msub></math>, which is the final ranks of the pages.
+                The process converges when the next iteration equals the current one—<math><msub><mi>R</mi><mi>k + 1</mi></msub></math><mo>=</mo><math><msub><mi>R</mi><mi>k</mi></msub></math>. At that point the numbers stop moving, and those stable values are the final PageRanks.
             </p>
 
             <h2>References</h2>
