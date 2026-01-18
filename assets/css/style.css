@@ -33,6 +33,7 @@ body {
 
 a {
     color: var(--link);
+    text-decoration: none;
 }
 
 a:hover {
@@ -54,10 +55,6 @@ a:hover {
 
 .site-header h1 a {
     text-decoration: none;
-}
-
-.site-header > a {
-    text-decoration: underline;
 }
 
 /* Post list */
@@ -203,10 +200,6 @@ article footer {
         background: var(--bg);
         z-index: 100;
     }
-}
-
-.nav-header a {
-    text-decoration: underline;
 }
 
 .nav-links {
