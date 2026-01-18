@@ -1,0 +1,13 @@
+title: Adam Soliev
+url: "https://adamsoliev.github.io"
+baseurl: ""
+
+permalink: /blog/:title/
+
+markdown: kramdown
+highlighter: rouge
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

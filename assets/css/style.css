@@ -1,0 +1,150 @@
+:root {
+    --text: #1a1a1a;
+    --bg: #fff;
+    --link: #1a1a1a;
+    --meta: #666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 18px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+a {
+    color: var(--link);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* Header */
+.site-header {
+    margin-bottom: 3rem;
+}
+
+.site-header h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.site-header h1 a {
+    text-decoration: none;
+}
+
+/* Post list */
+.post-list {
+    list-style: none;
+}
+
+.post-list li {
+    margin-bottom: 0.5rem;
+}
+
+.post-list time {
+    color: var(--meta);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+    margin-right: 1rem;
+}
+
+.year-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--meta);
+}
+
+.year-heading:first-child {
+    margin-top: 0;
+}
+
+/* Article */
+article header {
+    margin-bottom: 2rem;
+}
+
+article header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+article header time {
+    color: var(--meta);
+    font-size: 0.9rem;
+}
+
+article h2, article h3, article h4 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+article p {
+    margin-bottom: 1rem;
+}
+
+article ul, article ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+article li {
+    margin-bottom: 0.25rem;
+}
+
+article img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+}
+
+article blockquote {
+    border-left: 3px solid var(--meta);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--meta);
+}
+
+article code {
+    font-family: "SF Mono", Menlo, Monaco, monospace;
+    font-size: 0.85rem;
+    background: #f5f5f5;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+}
+
+article pre {
+    background: #f5f5f5;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border-radius: 3px;
+}
+
+article pre code {
+    background: none;
+    padding: 0;
+}
+
+article footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}

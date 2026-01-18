@@ -1,126 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown Timer</title>
-    <style>
-        /* CSS for styling the page and countdown */
-        body {
-            color: #000000; /* Black text */
-            font-family: 'Menlo', 'Courier New', Courier, monospace; /* Monospaced font */
+---
+layout: default
+title: Home
+---
+<header class="site-header">
+    <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+</header>
 
-            /* Center the countdown vertically and horizontally */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full viewport height */
-            margin: 0; /* Remove default body margin */
-        }
+{% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+{% for year in posts_by_year %}
+<h2 class="year-heading">{{ year.name }}</h2>
+<ul class="post-list">
+    {% for post in year.items %}
+    <li>
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%m-%d" }}</time>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endfor %}
 
-        #countdown {
-            text-align: center;
-        }
-
-        table {
-            border-collapse: collapse;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 16px;
-            padding: 2rem;
-        }
-
-        td {
-            padding: 1rem 1.5rem;
-            border: none;
-            text-align: left;
-        }
-
-        .label {
-            font-size: clamp(1rem, 4vw, 1.8rem);
-            font-weight: 400;
-            opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            width: 40%;
-        }
-
-        td:not(.label) {
-            font-size: clamp(1.5rem, 6vw, 3rem);
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 768px) {
-            table {
-                padding: 1rem;
-            }
-
-            td {
-                padding: 1rem 1.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div id="countdown">
-        <table>
-            <tr>
-                <td class="label">Days:</td>
-                <td id="days">0</td>
-            </tr>
-            <tr>
-                <td class="label">Hours:</td>
-                <td id="hours">0</td>
-            </tr>
-            <tr>
-                <td class="label">Minutes:</td>
-                <td id="minutes">0</td>
-            </tr>
-            <tr>
-                <td class="label">Seconds:</td>
-                <td id="seconds">0</td>
-            </tr>
-        </table>
-    </div>
-
-    <script>
-        // Set the date we're counting down to.
-        // The format is "Month Day, Year HH:MM:SS"
-        const countDownDate = new Date("Sep 13, 2027 00:00:00").getTime();
-
-        function updateCountdown() {
-            // Get today's date and time
-            const now = new Date().getTime();
-
-            // Find the distance in time between now and the countdown date
-            const distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Update only the values in the table cells
-            document.getElementById("days").textContent = days;
-            document.getElementById("hours").textContent = hours;
-            document.getElementById("minutes").textContent = minutes;
-            document.getElementById("seconds").textContent = seconds;
-
-            // If the countdown is over, display a message
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.getElementById("countdown").innerHTML = "COUNTDOWN FINISHED";
-            }
-        }
-
-        // Initialize countdown on page load
-        updateCountdown();
-
-        // Update the countdown every 1 second
-        const countdownInterval = setInterval(updateCountdown, 1000);
-    </script>
-
-</body>
-</html>
+{% if site.posts.size == 0 %}
+<p>No posts yet.</p>
+{% endif %}
