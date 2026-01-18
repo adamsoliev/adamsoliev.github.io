@@ -1,7 +1,7 @@
 :root {
     --text: #1a1a1a;
     --bg: #fff;
-    --link: #1a1a1a;
+    --link: #0066cc;
     --meta: #666;
 }
 
@@ -119,7 +119,27 @@ article ul, article ol {
 }
 
 article li {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* General content (non-article pages like about) */
+main > p {
+    margin-bottom: 1.5rem;
+}
+
+main > h2, main > h3 {
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+main > ul, main > ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+main > ul li, main > ol li {
+    margin-bottom: 0.4rem;
+    line-height: 1.6;
 }
 
 article img {
