@@ -1,0 +1,44 @@
+Jekyll blog hosted on GitHub Pages at adamsoliev.github.io
+
+Structure
+---------
+_config.yml             Site configuration
+_layouts/
+  default.html          Base HTML layout (includes MathJax)
+  post.html             Blog post layout
+_posts/                 Blog posts (YYYY-MM-DD-title.md)
+assets/
+  css/
+    style.css           Main styles
+    syntax.css          Code syntax highlighting (Rouge)
+  images/               Post images
+30-countdown/           Standalone countdown page
+about.md                About page
+index.html              Home page with post list
+feed.xml                RSS feed
+
+URLs
+----
+/                       Home (post list)
+/blog/<title>/          Blog posts
+/about                  About page
+/30-countdown           Countdown timer
+/feed.xml               RSS feed
+
+Adding a post
+-------------
+1. Create _posts/YYYY-MM-DD-title.md
+2. Add front matter:
+   ---
+   layout: post
+   title: "Title"
+   date: YYYY-MM-DD
+   ---
+3. Put images in assets/images/
+4. Reference images: ![alt](/assets/images/file.png)
+5. git add, commit, push
+
+Local preview
+-------------
+jekyll serve
+# http://localhost:4000

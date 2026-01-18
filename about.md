@@ -1,6 +1,8 @@
 ---
 layout: default
+title: About
 ---
+
 <nav class="nav-header">
     <a href="{{ '/' | relative_url }}">&larr; Index</a>
     <div class="nav-links">
@@ -8,11 +10,4 @@ layout: default
     </div>
 </nav>
 
-<article>
-    <header>
-        <h1>{{ page.title }}</h1>
-        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
-    </header>
-
-    {{ content }}
-</article>
+I am an engineer.

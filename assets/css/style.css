@@ -41,6 +41,9 @@ a:hover {
 
 /* Header */
 .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 3rem;
 }
 
@@ -51,6 +54,10 @@ a:hover {
 
 .site-header h1 a {
     text-decoration: none;
+}
+
+.site-header > a {
+    text-decoration: underline;
 }
 
 /* Post list */

@@ -4,6 +4,7 @@ title: Home
 ---
 <header class="site-header">
     <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+    <a href="{{ '/about' | relative_url }}">About</a>
 </header>
 
 {% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
