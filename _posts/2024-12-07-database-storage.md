@@ -4,7 +4,7 @@ title: "Database Storage"
 date: 2024-12-07
 ---
 
-#### Table of Contents
+### Table of Contents
 
 - [What and why](#what-and-why)
 - [Background](#background)
@@ -106,7 +106,7 @@ While all of these are OLTP use cases, their vastly different write requirements
 - **LSM (Log-Structured Merge) tree-based**: optimized for write-heavy workloads.
 - **LSH (Log-Structured Hash) table-based**: designed for extremely high-ingest workloads.
 
-#### <a id="b-plus-se"></a>B+tree-based
+### <a id="b-plus-se"></a>B+tree-based
 
 Introduced in the early 1970s[^1] [^2] [^3], the B+tree maintains global sorted order via a self-balancing tree and in-place updates. It serves as the foundational data structure for primary and secondary indexes in most relational databases.
 
@@ -142,13 +142,13 @@ By default, a primary key or unique constraint creates a B+tree index, so you ty
 
 Unlike InnoDB's clustered index, where leaf pages contain entire rows, PostgreSQL's B+tree leaf pages store (key, TID) pairs. The TID (tuple identifier) is a pointer to the row's physical location in the heap. Secondary indexes work the same way where they store TIDs pointing directly to heap tuples, rather than going through the primary key as in MySQL. This means every index lookup, whether primary or secondary, requires a separate heap fetch to retrieve the actual row data. This design simplifies index management but contributes to the MVCC-related bloat discussed in the CMU article linked earlier.
 
-#### <a id="lsm-tree-se"></a>LSM-tree-based
+### <a id="lsm-tree-se"></a>LSM-tree-based
 
 The Log-Structured Merge (LSM) tree was introduced in academic literature in 1996. LSM storage engines buffer writes in memory, periodically flush sorted runs to disk, and merge those runs in the background. This trades the strict in-place updates and globally ordered layout of B+trees for batched sequential I/O, yielding much higher write throughput. The trade-off is extra read latency (eg short-range lookups may hit multiple levels) and higher space/memory amplification. [^7]
 
 RocksDB is one of the state-of-the-art LSM-tree based storage engines. See its [wiki](https://github.com/facebook/rocksdb/wiki/RocksDB-Overview) for details.
 
-#### <a id="lsh-table-se"></a>LSH-table-based
+### <a id="lsh-table-se"></a>LSH-table-based
 
 The Log-Structured Hash (LSH) tables push the LSM idea to its extreme by dropping order maintenance entirely. Instead, they rely on an in-memory index, eg hash table, for efficient key-value lookups. New records are buffered in memory and then flushed to disk as new segments in a single, ever-growing log.
 
@@ -180,14 +180,14 @@ Most OLAP engines use this hybrid layout idea as a foundation, customizing it fo
 
 One of the major advantages of this layout is compression. Since data within a column is uniform (eg a column of integers), it compresses significantly better than row-oriented data. See [this](https://15445.courses.cs.cmu.edu/fall2025/notes/06-storage3.pdf) for a list of potential compressions.
 
-#### The Metadata Hierarchy
+### The Metadata Hierarchy
 
 In modern OLAP architectures, raw data files are wrapped in additional layers of metadata (eg to support ACID transactions [^16]):
 
 - Table Formats: These files track which data files belong to a specific table, manage schemas, and store file-level statistics (min/max values). Apache Iceberg and Databricks' Delta are the industry standards here.
 - Data Catalogs: This layer sits above table formats, defining which tables constitute a database and handling namespace operations like creating, renaming, or dropping tables. Snowflake's Polaris and Databricks' Unity Catalog are common examples.
 
-#### Handling Writes
+### Handling Writes
 
 While columnar storage is excellent for reading, it is inefficient for writing individual rows, particularly in sorted tables. To address this, OLAP systems typically use a log-structured approach.
 
