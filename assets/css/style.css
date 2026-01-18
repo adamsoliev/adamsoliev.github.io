@@ -16,13 +16,19 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-family: "Iowan Old Style", "Palatino Linotype", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     line-height: 1.6;
     color: var(--text);
     background: var(--bg);
-    max-width: 650px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 2rem 1rem;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
 }
 
 a {
@@ -147,4 +153,70 @@ article footer {
     margin-top: 3rem;
     padding-top: 1rem;
     border-top: 1px solid #eee;
+}
+
+/* Navigation */
+.nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+@media (min-width: 601px) {
+    .nav-header {
+        position: sticky;
+        top: 0;
+        background: var(--bg);
+        z-index: 100;
+    }
+}
+
+.nav-header a {
+    text-decoration: underline;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Tables */
+article table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+article th, article td {
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    text-align: left;
+}
+
+article th {
+    background: #f5f5f5;
+    font-weight: 600;
+}
+
+article tr:nth-child(even) {
+    background: #fafafa;
+}
+
+/* Highlight/mark */
+mark {
+    background-color: #fff3b0;
+    padding: 0.1rem 0.2rem;
+    border-radius: 2px;
+}
+
+/* MathJax sizing */
+mjx-container {
+    font-size: 100% !important;
+}
+
+mjx-container[jax="CHTML"] {
+    font-size: inherit !important;
 }
