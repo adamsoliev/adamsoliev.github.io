@@ -119,7 +119,11 @@ article ul, article ol {
 }
 
 article li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.125rem;
+}
+
+article li ul, article li ol {
+    margin-bottom: 0;
 }
 
 /* General content (non-article pages like about) */
